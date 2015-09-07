@@ -12,5 +12,5 @@ This repository initially contains the SymTab Assignment files:
 - Makefile 
  - The Makefile containing the dependency rules as well as "clean" and "test" targets.
 
-You will need to create a SymTab.c file and implement the required functions. The project can be tested with "SymTabDriver < test-data" or "make test" is a shorthand for this. When complete, "make clean" to remove object files and executables, use git to add and commit your changes and push the project back up to your repository.
+You will need to create a SymTab.c file and implement the required functions. The project can be tested with "SymTabDriver < SymData.txt" or "make test" is a shorthand for this. When complete, "make clean" to remove object files and executables, use git to add and commit your changes and push the project back up to your repository.
 
