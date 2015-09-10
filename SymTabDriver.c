@@ -50,7 +50,7 @@ main(int argc, char **argv)
     }
     else {
       fprintf(stdout,"  Enter: Entered: %15s\n",GetName(anEntry));
-      anAttr = (struct Attributes *) malloc(sizeof(struct Attributes));
+      anAttr = malloc(sizeof(struct Attributes));
       anAttr->value1 = val1;
       anAttr->value2 = 1;
       SetAttr(anEntry,anAttr);
