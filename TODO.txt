@@ -1,0 +1,7 @@
+1) Consistant format for function definitions
+
+2) typedef struct names to remove extranious keywords
+
+3) inline getters and setters to remove unnecessary function calls
+
+4) Proofread and consistantly format comments
