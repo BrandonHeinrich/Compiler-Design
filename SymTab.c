@@ -35,12 +35,16 @@ struct SymTab { int size;
 /* CreateSymTab   create and return a pointer to a symbol table of
                   approximately Size many entries. If creation of
 		  the symbol table fails, return NULL
+
+   DestroyHelper  destroys a SymEntry, and frees all the memory associated
+		  with it. If there is a SymEntry pointed to by this Entry,
+		  it is also destroyed.
    
    DestroySymTab  destroy all storage associated with a Symbol Table which 
                   is under the table's control. Any use of the table after
                   destruction automatically fails.
 */
-struct SymTab *   CreateSymTab(int size) {
+struct SymTab* CreateSymTab(int size) {
 	// Create a Symbol Table
 	struct SymTab table;
 
@@ -66,11 +70,25 @@ struct SymTab *   CreateSymTab(int size) {
 	return &table;	
 }
 
-void              DestroySymTab(struct SymTab *aTable) {
+void DestroyHelper(struct SymEntry* anEntry) {
+	// if the pointer is NULL, entry does not exist
+	if(anEntry == NULL) {
+		return;
+	}
+
+	// Destroy the next entry while we still have
+	// access to it
+	DestroyHelper(anEntry->next);
+
+	// Finally, free memory to the current entry
+	free(anEntry);
+}
+
+void DestroySymTab(struct SymTab* aTable) {
 	// Walk through array, and for each element, destroy the 
 	// table entries associated with it.
 	for(int i = 0; i < aTable->size; i += 1) {
-		DestroySymEntry(aTable->contents[i]);
+		DestroyHelper(aTable->contents[i]);
 		// Set pointer to zero to prevent accidental use
 		aTable.contents[i] = NULL;
 	}
@@ -103,10 +121,9 @@ struct SymEntry * FindName(struct SymTab *aTable,
    GetAttr        get the attribute pointer associated with an entry.
    GetName        get the name string associated with an entry.
 */   
-void              SetAttr(struct SymEntry *anEntry,
-                          void *attributes);
-void       *      GetAttr(struct SymEntry *anEntry);
-const char *      GetName(struct SymEntry *anEntry);
+void SetAttr(struct SymEntry *anEntry, void *attributes);
+void* GetAttr(struct SymEntry *anEntry);
+const char* GetName(struct SymEntry *anEntry);
 
 /* These two functions can be used to enumerate the contents of a table. 
    The enumeration order is arbitrary.
