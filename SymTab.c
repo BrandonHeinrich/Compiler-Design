@@ -32,17 +32,58 @@ struct SymTab { int size;
                 struct SymEntry **contents;
 };
 
-/* CreateSymTab   create and return a reference to a symbol table of
-                  approximately Size many entries.
+/* CreateSymTab   create and return a pointer to a symbol table of
+                  approximately Size many entries. If creation of
+		  the symbol table fails, return NULL
    
    DestroySymTab  destroy all storage associated with a Symbol Table which 
-                  is under the table's control.
+                  is under the table's control. Any use of the table after
+                  destruction automatically fails.
 */
 struct SymTab *   CreateSymTab(int size) {
-	SymTab* table = malloc(sizeof(SymEntry));
+	// Create a Symbol Table
+	struct SymTab table;
+
+	// Populate Fields
+	table.size = size;
+	table.contents = malloc(sizeof(SymEntry)*size);
+
+	// If allocation of memory for the pointer array
+	// fails, then return nothing.
+	if(table.contents == NULL) {
+		return NULL;
+	}
+
+	// If a pointer in the array is NULL, there is no
+	// entry at that point yet. If it is non-NULL, 
+	// there is an entry. For creating an empty table,
+	// It must be assured that all elements are NULL
+	for(int i = 0; i < size; i += 1) {
+		table.contents[i] = NULL;
+	}
+
+	// Return the address of the SymTab
+	return &table;	
 }
 
-void              DestroySymTab(struct SymTab *aTable);
+void              DestroySymTab(struct SymTab *aTable) {
+	// Walk through array, and for each element, destroy the 
+	// table entries associated with it.
+	for(int i = 0; i < aTable->size; i += 1) {
+		DestroySymEntry(aTable->contents[i]);
+		// Set pointer to zero to prevent accidental use
+		aTable.contents[i] = NULL;
+	}
+	
+	// Finally, free the allocated memory
+	free(aTable->contents);
+	
+	// Set contents to null to prevent accidental errors.
+	aTable->contents = NULL
+
+	// Set size to -1 to flag that table has been destroyed
+	aTable->size = -1;
+}
 
 /* EnterName      enter a Name into a symbol table. Returns a 
                   boolean indicating whether an entry for Name was 
