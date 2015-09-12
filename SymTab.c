@@ -121,9 +121,15 @@ struct SymEntry * FindName(struct SymTab *aTable,
    GetAttr        get the attribute pointer associated with an entry.
    GetName        get the name string associated with an entry.
 */   
-void SetAttr(struct SymEntry *anEntry, void *attributes);
-void* GetAttr(struct SymEntry *anEntry);
-const char* GetName(struct SymEntry *anEntry);
+void SetAttr(struct SymEntry* anEntry, void *attributes) { 
+	anEntry->attributes = attributes;
+}
+void* GetAttr(struct SymEntry* anEntry) {
+	return anEntry->attributes
+}
+const char* GetName(struct SymEntry* anEntry) {
+	return anEntry->name;
+}
 
 /* These two functions can be used to enumerate the contents of a table. 
    The enumeration order is arbitrary.
