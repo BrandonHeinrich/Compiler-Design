@@ -103,7 +103,9 @@ void DestroySymTab(struct SymTab* aTable) {
 	aTable->size = -1;
 }
 
-/* EnterName      enter a Name into a symbol table. Returns a 
+/* HashName       calculate the hash value of a name
+
+   EnterName      enter a Name into a symbol table. Returns a 
                   boolean indicating whether an entry for Name was 
                   already listed in the table. Passes back an argument
                   containing an entry reference for the name.
@@ -111,11 +113,62 @@ void DestroySymTab(struct SymTab* aTable) {
    FindName       find a Name in a symbol table. Return an entry reference
                   or NULL depending on whether the Name was found.
 */
+int HashName(const char* name) {
+	return (int) *name;
+}
+
 bool              EnterName(struct SymTab *aTable,
                             const char *name,
-                            struct SymEntry **anEntry);
-struct SymEntry * FindName(struct SymTab *aTable,
-                           const char * name);
+                            struct SymEntry **anEntry) {
+	// First, find out if the name is in the table
+	// if it is, were done, and we can return
+	*anEntry = FindName(aTable, name);
+	if(*anEntry != NULL) {
+		return true;
+	}
+
+	// Name is not in the table, so we need to add it
+
+	// Create a new SymEntry for name
+	struct SymEntry newEntry;
+	newEntry.name = name;
+	*anEntry = @newEntry;
+
+	// first, find what slot name would be in
+	int hash = HashName(name);
+	int slot = hash % aTable->size;
+
+	// Prepend the new entry to the list in the table;
+	newEntry.next = aTable->contents[slot];
+	aTable->contents[slot] = @newEntry;
+	
+	// entry was not in the table
+	return false;
+}
+struct SymEntry* FindName(struct SymTab *aTable,
+                           const char * name) {
+	// Find what slot name would be in
+	int hash = HashName(name);
+	int slot = hash % aTable->size;
+	
+	// Find head of the list
+	SymEntry* head = aTable->content[slot];
+
+	// Walk list looking for name
+	while(head != NULL) {
+		// If we found the name, return its entry
+		if(strcmp(name, head->name) == 0) {
+			return head;
+		}
+
+		// Move to next element in the list
+		head = head->next;
+	}	
+	
+	// Reached end of list with out finding
+	// name. returning null
+	return NULL;
+}
 
 /* SetAttr        set the attribute pointer associated with an entry. 
    GetAttr        get the attribute pointer associated with an entry.
