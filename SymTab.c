@@ -195,9 +195,25 @@ const char* GetName(struct SymEntry* anEntry) {
    NextEntry      return the next entry after the supplied entry 
                   or NULL if no more entries.
 */
-struct SymEntry *  FirstEntry(struct SymTab *aTable);
+struct SymEntry *  FirstEntry(struct SymTab *aTable) {
+	for(int i = 0; i<aTable->size; i += 1) {
+		if(aTable->contents[i] != NULL) {
+			return aTable->contents[i];
+		}
+	}
+}
 struct SymEntry *  NextEntry(struct SymTab *aTable,
-                             struct SymEntry *anEntry);
+                             struct SymEntry *anEntry) {
+	if(anEntry->next == NULL) {
+		int nextRow = HashName(anEntry->name) % aTable->size;
+		for(int i = nextRow; i<aTable->size; i += 1) {
+			if(aTable->contents[i] != NULL) {
+				return aTable->contents[i];
+			}
+		}
+	}
+	return anEntry->next;
+}
         
         
 /* 
@@ -208,4 +224,6 @@ struct Stats { int minLen;
                int avgLen;
                int entryCnt;
 };
-struct Stats *     Statistics(struct SymTab *aTable);
+
+struct Stats *     Statistics(struct SymTab *aTable) {
+}
