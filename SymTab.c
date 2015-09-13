@@ -226,4 +226,37 @@ struct Stats { int minLen;
 };
 
 struct Stats *     Statistics(struct SymTab *aTable) {
+	// Create stats structure
+	struct Stats stats;
+
+	// Zero fields in stats
+	stats.minLen = 0;
+	stats.maxLen = 0;
+	stats.avgLen = 0;
+	stats.entryCnt = 0;
+
+	
+	SymEntry* next = FirstEntry(aTable);
+	while(next != NULL) {
+		stats.entryCnt += 1;
+		next = NextEntry(aTable, next);
+	}
+
+	return @stats;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
