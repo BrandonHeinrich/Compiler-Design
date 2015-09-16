@@ -45,16 +45,16 @@ struct SymTab { int size;
                   destruction automatically fails.
 */
 struct SymTab* CreateSymTab(int size) {
-	// Create a Symbol Table
-	struct SymTab table;
+	// Create a pointer to a Symbol Table
+	struct SymTab* table = malloc(sizeof(struct SymEntry));
 
 	// Populate Fields
-	table.size = size;
-	table.contents = malloc(sizeof(SymEntry)*size);
+	table->size = size;
+	table->contents = malloc(sizeof(struct SymEntry*) * size);
 
 	// If allocation of memory for the pointer array
 	// fails, then return nothing.
-	if(table.contents == NULL) {
+	if(table->contents == NULL) {
 		return NULL;
 	}
 
@@ -63,14 +63,14 @@ struct SymTab* CreateSymTab(int size) {
 	// there is an entry. For creating an empty table,
 	// It must be assured that all elements are NULL
 	for(int i = 0; i < size; i += 1) {
-		table.contents[i] = NULL;
+		table.->contents[i] = NULL;
 	}
 
-	// Return the address of the SymTab
-	return &table;	
+	// Return the pointer to the SymTab
+	return table;	
 }
 
-void DestroyHelper(struct SymEntry* anEntry) {
+void DestroySymEntry(struct SymEntry* anEntry) {
 	// if the pointer is NULL, entry does not exist
 	if(anEntry == NULL) {
 		return;
@@ -78,7 +78,10 @@ void DestroyHelper(struct SymEntry* anEntry) {
 
 	// Destroy the next entry while we still have
 	// access to it
-	DestroyHelper(anEntry->next);
+	DestroySymEntry(anEntry->next);
+
+	// Destroy the name string
+	free(anEntry->name);
 
 	// Finally, free memory to the current entry
 	free(anEntry);
@@ -88,7 +91,7 @@ void DestroySymTab(struct SymTab* aTable) {
 	// Walk through array, and for each element, destroy the 
 	// table entries associated with it.
 	for(int i = 0; i < aTable->size; i += 1) {
-		DestroyHelper(aTable->contents[i]);
+		DestroySymEntry(aTable->contents[i]);
 		// Set pointer to zero to prevent accidental use
 		aTable.contents[i] = NULL;
 	}
@@ -99,8 +102,8 @@ void DestroySymTab(struct SymTab* aTable) {
 	// Set contents to null to prevent accidental errors.
 	aTable->contents = NULL
 
-	// Set size to -1 to flag that table has been destroyed
-	aTable->size = -1;
+	// Free memory for table
+	free(aTable);
 }
 
 /* HashName       calculate the hash value of a name
@@ -130,17 +133,15 @@ bool              EnterName(struct SymTab *aTable,
 	// Name is not in the table, so we need to add it
 
 	// Create a new SymEntry for name
-	struct SymEntry newEntry;
-	newEntry.name = name;
-	*anEntry = @newEntry;
+	*anEntry = malloc(sizeof(struct SymEntry*));
 
 	// first, find what slot name would be in
 	int hash = HashName(name);
 	int slot = hash % aTable->size;
 
 	// Prepend the new entry to the list in the table;
-	newEntry.next = aTable->contents[slot];
-	aTable->contents[slot] = @newEntry;
+	*anEntry->next = aTable->contents[slot];
+	aTable->contents[slot] = *anEntry;
 	
 	// entry was not in the table
 	return false;
