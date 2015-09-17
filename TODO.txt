@@ -1,9 +1,7 @@
-1) Consistant format for function definitions
+1) Finish implementations
 
 2) Proofread and consistantly format comments
 
-3) Finish implementations
+3) Implement better hash function
 
-4) Implement better hash function
-
-5) Make comments more clear in some spots
+4) Make comments more clear in some spots

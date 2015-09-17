@@ -20,16 +20,18 @@
 /* The Name/Attributes association structure used in the symbol tables
    linked list.
 */
-struct SymEntry { char *name;
-                  void *attributes;
-                  struct SymEntry *next;
+struct SymEntry {
+	char *name;
+    void *attributes;
+	struct SymEntry *next;
 };
 
 /* The symbol table structure proper. The hash table array Contents
    is dynamically allocated according to size
 */
-struct SymTab { int size;
-                struct SymEntry **contents;
+struct SymTab {
+	int size;
+	struct SymEntry **contents;
 };
 
 /* CreateSymTab   create and return a pointer to a symbol table of
@@ -120,9 +122,9 @@ int HashName(const char* name) {
 	return (int) *name;
 }
 
-bool              EnterName(struct SymTab *aTable,
-                            const char *name,
-                            struct SymEntry **anEntry) {
+bool EnterName(struct SymTab* aTable,
+               const char* name,
+               struct SymEntry** anEntry) {
 	// First, find out if the name is in the table
 	// if it is, were done, and we can return
 	*anEntry = FindName(aTable, name);
@@ -146,8 +148,8 @@ bool              EnterName(struct SymTab *aTable,
 	// entry was not in the table
 	return false;
 }
-struct SymEntry* FindName(struct SymTab *aTable,
-                           const char * name) {
+struct SymEntry* FindName(struct SymTab* aTable,
+                          const char* name) {
 	// Find what slot name would be in
 	int hash = HashName(name);
 	int slot = hash % aTable->size;
@@ -175,7 +177,7 @@ struct SymEntry* FindName(struct SymTab *aTable,
    GetAttr        get the attribute pointer associated with an entry.
    GetName        get the name string associated with an entry.
 */   
-void SetAttr(struct SymEntry* anEntry, void *attributes) { 
+void SetAttr(struct SymEntry* anEntry, void* attributes) { 
 	anEntry->attributes = attributes;
 }
 void* GetAttr(struct SymEntry* anEntry) {
@@ -196,15 +198,15 @@ const char* GetName(struct SymEntry* anEntry) {
    NextEntry      return the next entry after the supplied entry 
                   or NULL if no more entries.
 */
-struct SymEntry *  FirstEntry(struct SymTab *aTable) {
+struct SymEntry* FirstEntry(struct SymTab* aTable) {
 	for(int i = 0; i<aTable->size; i += 1) {
 		if(aTable->contents[i] != NULL) {
 			return aTable->contents[i];
 		}
 	}
 }
-struct SymEntry *  NextEntry(struct SymTab *aTable,
-                             struct SymEntry *anEntry) {
+struct SymEntry* NextEntry(struct SymTab* aTable,
+                           struct SymEntry* anEntry) {
 	if(anEntry->next == NULL) {
 		int nextRow = HashName(anEntry->name) % aTable->size;
 		for(int i = nextRow; i<aTable->size; i += 1) {
@@ -220,13 +222,14 @@ struct SymEntry *  NextEntry(struct SymTab *aTable,
 /* 
 */
 
-struct Stats { int minLen;
-               int maxLen;
-               int avgLen;
-               int entryCnt;
+struct Stats {
+	int minLen;
+	int maxLen;
+	int avgLen;
+	int entryCnt;
 };
 
-struct Stats *     Statistics(struct SymTab *aTable) {
+struct Stats* Statistics(struct SymTab* aTable) {
 	// Create stats structure
 	struct Stats stats;
 
