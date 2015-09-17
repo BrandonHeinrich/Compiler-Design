@@ -20,6 +20,8 @@
 */
 
 #include <stdbool.h>
+#include <stddef.h>
+#include <stdlib.h>
 
 /* The Name/Attributes association structure used in the symbol tables
    linked list.

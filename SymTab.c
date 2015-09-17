@@ -19,20 +19,20 @@
 
 /* The Name/Attributes association structure used in the symbol tables
    linked list.
-*/
+
 struct SymEntry {
 	char *name;
     void *attributes;
 	struct SymEntry *next;
-};
+}; */
 
 /* The symbol table structure proper. The hash table array Contents
    is dynamically allocated according to size
-*/
+
 struct SymTab {
 	int size;
 	struct SymEntry **contents;
-};
+}; */
 
 /* CreateSymTab   create and return a pointer to a symbol table of
                   approximately Size many entries. If creation of
@@ -64,8 +64,9 @@ struct SymTab* CreateSymTab(int size) {
 	// entry at that point yet. If it is non-NULL, 
 	// there is an entry. For creating an empty table,
 	// It must be assured that all elements are NULL
-	for(int i = 0; i < size; i += 1) {
-		table.->contents[i] = NULL;
+	int i;
+	for(i = 0; i < size; i += 1) {
+		table->contents[i] = NULL;
 	}
 
 	// Return the pointer to the SymTab
@@ -92,17 +93,18 @@ void DestroySymEntry(struct SymEntry* anEntry) {
 void DestroySymTab(struct SymTab* aTable) {
 	// Walk through array, and for each element, destroy the 
 	// table entries associated with it.
-	for(int i = 0; i < aTable->size; i += 1) {
+	int i;
+	for(i = 0; i < aTable->size; i += 1) {
 		DestroySymEntry(aTable->contents[i]);
 		// Set pointer to zero to prevent accidental use
-		aTable.contents[i] = NULL;
+		aTable->contents[i] = NULL;
 	}
 	
 	// Finally, free the allocated memory
 	free(aTable->contents);
 	
 	// Set contents to null to prevent accidental errors.
-	aTable->contents = NULL
+	aTable->contents = NULL;
 
 	// Free memory for table
 	free(aTable);
@@ -142,7 +144,7 @@ bool EnterName(struct SymTab* aTable,
 	int slot = hash % aTable->size;
 
 	// Prepend the new entry to the list in the table;
-	*anEntry->next = aTable->contents[slot];
+	(**anEntry).next = aTable->contents[slot];
 	aTable->contents[slot] = *anEntry;
 	
 	// entry was not in the table
@@ -155,12 +157,12 @@ struct SymEntry* FindName(struct SymTab* aTable,
 	int slot = hash % aTable->size;
 	
 	// Find head of the list
-	SymEntry* head = aTable->content[slot];
+	struct SymEntry* head = aTable->contents[slot];
 
 	// Walk list looking for name
 	while(head != NULL) {
 		// If we found the name, return its entry
-		if(strcmp(name, head->name) == 0) {
+		if(strcmp(name, (*head).name) == 0) {
 			return head;
 		}
 
@@ -181,7 +183,7 @@ void SetAttr(struct SymEntry* anEntry, void* attributes) {
 	anEntry->attributes = attributes;
 }
 void* GetAttr(struct SymEntry* anEntry) {
-	return anEntry->attributes
+	return anEntry->attributes;
 }
 const char* GetName(struct SymEntry* anEntry) {
 	return anEntry->name;
@@ -199,7 +201,8 @@ const char* GetName(struct SymEntry* anEntry) {
                   or NULL if no more entries.
 */
 struct SymEntry* FirstEntry(struct SymTab* aTable) {
-	for(int i = 0; i<aTable->size; i += 1) {
+	int i;
+	for(i = 0; i<aTable->size; i += 1) {
 		if(aTable->contents[i] != NULL) {
 			return aTable->contents[i];
 		}
@@ -209,7 +212,8 @@ struct SymEntry* NextEntry(struct SymTab* aTable,
                            struct SymEntry* anEntry) {
 	if(anEntry->next == NULL) {
 		int nextRow = HashName(anEntry->name) % aTable->size;
-		for(int i = nextRow; i<aTable->size; i += 1) {
+		int i;
+		for(i = nextRow; i<aTable->size; i += 1) {
 			if(aTable->contents[i] != NULL) {
 				return aTable->contents[i];
 			}
@@ -220,33 +224,31 @@ struct SymEntry* NextEntry(struct SymTab* aTable,
         
         
 /* 
-*/
-
 struct Stats {
 	int minLen;
 	int maxLen;
 	int avgLen;
 	int entryCnt;
-};
+};*/
 
 struct Stats* Statistics(struct SymTab* aTable) {
 	// Create stats structure
-	struct Stats stats;
+	struct Stats* stats = malloc(sizeof(struct Stats));
 
 	// Zero fields in stats
-	stats.minLen = 0;
-	stats.maxLen = 0;
-	stats.avgLen = 0;
-	stats.entryCnt = 0;
+	stats->minLen = 0;
+	stats->maxLen = 0;
+	stats->avgLen = 0;
+	stats->entryCnt = 0;
 
 	
-	SymEntry* next = FirstEntry(aTable);
+	struct SymEntry* next = FirstEntry(aTable);
 	while(next != NULL) {
-		stats.entryCnt += 1;
+		stats->entryCnt += 1;
 		next = NextEntry(aTable, next);
 	}
 
-	return @stats;
+	return stats;
 }
 
 
