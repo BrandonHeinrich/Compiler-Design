@@ -1,15 +1,9 @@
 1) Consistant format for function definitions
 
-2) typedef struct names to remove extranious keywords
+2) Proofread and consistantly format comments
 
-3) inline getters and setters to remove unnecessary function calls
+3) Finish implementations
 
-4) Proofread and consistantly format comments
+4) Implement better hash function
 
-5) Finish implementations
-
-6) Possibly create an iterator struct ro replace firstentry and nextentry
-
-7) Implement better hash function
-
-8) Make comments more clear in some spots
+5) Make comments more clear in some spots
