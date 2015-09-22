@@ -108,11 +108,13 @@ struct SymEntry * NextEntry(struct SymTab *aTable, struct SymEntry *anEntry) {
 	result = NULL;
 	if(anEntry->next == NULL) {
 		int i = Hash(anEntry->name)%aTable->size;
-		for(i= i+1; i<aTable->size; i+=1) {
+		for(i= i+1; i < aTable->size; i+=1) {
 			if(aTable->contents[i] != NULL) {
 				return aTable->contents[i];
 			}
 		}
+		frintf("I = %d\n",i);
+		printf("Size = %d\n", aTable->size);
 	} else {
 		result = (*anEntry).next;
 	}
