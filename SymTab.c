@@ -35,13 +35,7 @@ void DestroySymTab(struct SymTab *aTable) {
 }
 int Hash(const char *name) {
 	BEGIN("Hash");
-	int hash = 5381;
-    	int c;
-
-    	while (c = *name++)
-        	hash = ((hash << 5) + hash) + c; /* hash * 33 + c */
-
-	//printf("Hash: %d\n", hash);
+	int hash = 0;
 	RETURN("Hash", "1", hash);
 }
 bool EnterName(struct SymTab *aTable, const char *name, struct SymEntry **anEntry) {
@@ -108,15 +102,18 @@ struct SymEntry * NextEntry(struct SymTab *aTable, struct SymEntry *anEntry) {
 	result = NULL;
 	if(anEntry->next == NULL) {
 		int i = Hash(anEntry->name)%aTable->size;
-		for(i= i+1; i < aTable->size; i+=1) {
+		i += 1;
+
+		if(i == aTable->size) return NULL;
+		
+		for(; i < aTable->size; i+=1) {
+			printf("Checking row %d\n",i);
 			if(aTable->contents[i] != NULL) {
 				return aTable->contents[i];
 			}
 		}
-		frintf("I = %d\n",i);
-		printf("Size = %d\n", aTable->size);
 	} else {
-		result = (*anEntry).next;
+		return anEntry->next;
 	}
 	return result;
 }
