@@ -14,23 +14,27 @@ struct Attributes {
 };
 
 int
-main(int argc, char **argv)
-{ FILE *fd;
+main(int argc, char **argv) { 
+  fprintf(stdout, "Entering: main\n");
+  FILE *fd;
   struct SymTab *theTable, *copyTable;
   struct SymEntry *anEntry, *copyEntry;
   struct Attributes *anAttr;
   char buffer[16];
   int val1, val2, i;
 
+  
   /* Create a table of appoximately size 10. */
   theTable = CreateSymTab(5);
+  
+  
 	
-	/* open input file */
-	fd = fopen("SymData.txt","r"); 
-	if (!fd) {
-	  fprintf(stdout,"Can't open input file.\n");
-		exit(1);
-	}
+  /* open input file */
+  fd = fopen("SymData.txt","r"); 
+  if (!fd) {
+    fprintf(stdout,"Can't open input file.\n");
+    exit(1);
+  }
   
   /* Read lines consisting of a name string a integer from std input. 
      if already present increment Value2, if newly entered allocate
@@ -49,7 +53,7 @@ main(int argc, char **argv)
       ((struct Attributes *) GetAttr(anEntry))->value2++;
     }
     else {
-      fprintf(stdout,"  Enter: Entered: %15s\n",GetName(anEntry));
+      fprintf(stdout,"  Enter: Entered: %15s\n", GetName(anEntry));
       anAttr = malloc(sizeof(struct Attributes));
       anAttr->value1 = val1;
       anAttr->value2 = 1;
@@ -103,6 +107,7 @@ main(int argc, char **argv)
   
   /* Destroy CopyTable. */
   DestroySymTab(copyTable);
-  
+
+  fprintf(stdout, "Leaving: main\n");  
   exit(0);
 } 
