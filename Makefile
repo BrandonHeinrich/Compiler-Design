@@ -1,5 +1,5 @@
 
-SymTab.o: SymTab.c SymTab.h
+SymTab.o: SymTab.c SymTab.h macros.h
 
 SymTabDriver: SymTabDriver.o SymTab.o
 

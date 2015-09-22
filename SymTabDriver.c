@@ -57,6 +57,7 @@ main(int argc, char **argv)
     }
   }
   
+
   struct Stats * stats = Statistics(theTable);
   fprintf(stdout,"Statistics min: %d max: %d avg: %d total: %d\n",
           stats->minLen,stats->maxLen,stats->avgLen,stats->entryCnt);
@@ -82,7 +83,6 @@ main(int argc, char **argv)
   
   /* Destroy original table. */
   DestroySymTab(theTable);
-  
   /* Enumerate the contents of CopyTable. */
   fprintf(stdout,"\nContents of Copy Table\n");
   anEntry = FirstEntry(copyTable);
@@ -96,7 +96,6 @@ main(int argc, char **argv)
     free(GetAttr(anEntry));
     anEntry = NextEntry(copyTable, anEntry);
   }
-  
   stats = Statistics(copyTable);
   fprintf(stdout,"Statistics min: %d max: %d avg: %d total: %d\n",
           stats->minLen,stats->maxLen,stats->avgLen,stats->entryCnt);
