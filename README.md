@@ -1,16 +1,29 @@
 # CS 442 - Compiler Construction
-## SymTab Assignment Respository
+## IOMngr 
 
-This repository initially contains the SymTab Assignment files: 
+This repository contains files to be added to your main project repository to include the IOMngr capabilities. The respository contains
 
-- SymTabDriver.c 
- - The main test driver for the assignment. This driver creates a symbol table, reads names and values from stdin, enters the names into the table, displays the table contents, creates a second table, copies the names from the first table into the second and finally displays the contents of the second table. 
-- SymTab.h 
- - The include file defining the required structures and functions for the implementation. 
-- SymData.txt 
- - A file of test data. This provides a minimal test. Your submission will be tested with a different data file. 
-- Makefile 
- - The Makefile containing the dependency rules as well as "clean" and "test" targets.
+- IOMngrDriver.c
+ - This is the test driver for the assignment. This driver opens the source and listing files and repeatedly requests the next character from the source file. When specific types of characters are seen it posts messages indicating the type of character. 
 
-You will need to create a SymTab.c file and implement the required functions. The project can be tested with "SymTabDriver < SymData.txt" or "make test" is a shorthand for this. When complete, "make clean" to remove object files and executables, use git to add and commit your changes and push the project back up to your repository.
+- IOMngr.h
+ - The include file defining the functions implemented by the IOMngr. 
+
+- IOMngrSource
+ - A file containing an excerpt of a C source file for testing.
+
+- IOMngrListing
+ - An example of the listing file produced from the given source file. 
+
+- Makefile
+ - An extended Makefile containing the rules required for building and testing the project. 
+
+## What to Do
+
+- Do not fork this repository on Gitlab, instead
+- On your development machine, in a location different than your assignment repository, clone this project. Your assignment repository will continue to accumulate all files for the project. 
+- Copies the files from this repository to your assignment repository.
+- Discard the clone of this repository.
+- Create a IOMngr.c file and implement the required functionality.
+- Make clean and then, git add/commit/push your completed assignment back up to Gitlab for submission.
 

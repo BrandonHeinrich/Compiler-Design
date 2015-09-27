@@ -1,0 +1,60 @@
+    1: #include "IOMngr.h"
+                 ABC
+    -A found uppercase
+    -B found uppercase
+    -C found uppercase
+
+    2: 
+    3: int
+    4: main(int argc, char **argv)
+           A        B      CD    E
+    -A found grouping symbol
+    -B found punctuation
+    -C found operator symbol
+    -D found operator symbol
+    -E found grouping symbol
+
+    5: { char curChar;
+       A         B   C
+    -A found grouping symbol
+    -B found uppercase
+    -C found punctuation
+
+    6:   char *src, *lst;
+              A   B C   D
+    -A found operator symbol
+    -B found punctuation
+    -C found operator symbol
+    -D found punctuation
+
+    7:   
+    8:   if (argc == 1) {
+            A     BC  D E
+    -A found grouping symbol
+    -B found operator symbol
+    -C found operator symbol
+    -D found grouping symbol
+    -E found grouping symbol
+
+    9:     src = "IOMngrSource";
+               A  BCD   E      F
+    -A found operator symbol
+    -B found uppercase
+    -C found uppercase
+    -D found uppercase
+    -E found uppercase
+    -F found punctuation
+
+   10:     lst = "IOMngrListing";
+               A  BCD   E       F
+    -A found operator symbol
+    -B found uppercase
+    -C found uppercase
+    -D found uppercase
+    -E found uppercase
+    -F found punctuation
+
+   11:   }
+         A
+    -A found grouping symbol
+

@@ -1,0 +1,11 @@
+#include "IOMngr.h"
+
+int
+main(int argc, char **argv)
+{ char curChar;
+  char *src, *lst;
+  
+  if (argc == 1) {
+    src = "IOMngrSource";
+    lst = "IOMngrListing";
+  }
