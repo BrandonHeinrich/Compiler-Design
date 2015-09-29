@@ -1,0 +1,10 @@
+#include "IOMngr.h"
+
+struct Message {
+	int column;
+	char *message;
+};
+
+struct MessageQueue {
+	Message *queue[26]
+}
