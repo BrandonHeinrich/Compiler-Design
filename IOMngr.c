@@ -20,6 +20,8 @@ int message_position[26];
 
 char message[26][MAXLINE];
 
+bool needUpdate;
+
 bool OpenFiles(const char *aSourceName, const char *aListingName) {
 	source = fopen(aSourceName, "r");
 
@@ -32,6 +34,7 @@ bool OpenFiles(const char *aSourceName, const char *aListingName) {
 	line = 1;
 	column = 0;
 	message_num = 0;
+	needUpdate = false;
 
 	if(source != NULL && listing != NULL) {
 		return true;
@@ -56,40 +59,14 @@ char GetSourceChar() {
 		case EOF:
 			break;
 		case '\n':
+			needUpdate = true;
 			buffer[column] = next;
 			column += 1;
-			if(message_num > 0 || listing != stdout) {
-				fprintf(listing, "%5d: ", line);
-				int i;
-				for(i=0; i<column; i+=1) {
-					fputc(buffer[i], listing);
-				}
-			}
-			line += 1;
-			column = 0;
-
-			if(message_num > 0) {
-				fprintf(listing, "      ");
-				int i;
-				int cur = 0;
-				for(i=0; cur < message_num; i+=1) {
-					if(i == message_position[cur]) {
-						fputc('A' + cur, listing);
-						cur += 1;
-					} else {
-						fputc(' ', listing);
-					}
-				}
-				fputc('\n', listing);
-				for(i=0; i<message_num; i+=1) {
-					fprintf(listing, "    -%c %s\n", 'A'+i, message[i]);
-				}
-				message_num = 0;
-				fputc('\n', listing);
-			}
-			
 			break;
 		default:
+			if(needUpdate) {
+				UpdateListingFile();
+			}
 			buffer[column] = next;
 			column += 1;
 			break;
@@ -98,6 +75,7 @@ char GetSourceChar() {
 }
 
 void PostMessage(int aColumn, const char *aMessage) {
+	//printf("Message for Column: %d", aColumn);
 	if(message_num < 26) {
 		message_position[message_num] = aColumn;
 		strcpy(message[message_num], aMessage);
@@ -111,4 +89,38 @@ int GetCurrentLine() {
 
 int GetCurrentColumn() {
 	return column;
+}
+
+void UpdateListingFile() {
+	needUpdate = false;
+	if(message_num > 0 || listing != stdout) {
+		fprintf(listing, "%5d: ", line);
+		int i;
+		for(i=0; i<column; i+=1) {
+			fputc(buffer[i], listing);
+		}
+	}
+	line += 1;
+	column = 0;
+
+	if(message_num > 0) {
+		fprintf(listing, "      ");
+		int i;
+		int cur = 0;
+		for(i=0; cur < message_num; i+=1) {
+			//printf("i: %d cur: %d num: %d message_pos: %d\n", i, cur, message_num, message_position[cur]);
+			if(i == message_position[cur]) {
+				fputc('A' + cur, listing);
+				cur += 1;
+			} else {
+				fputc(' ', listing);
+			}
+		}
+		fputc('\n', listing);
+		for(i=0; i<message_num; i+=1) {
+			fprintf(listing, "    -%c %s\n", 'A'+i, message[i]);
+		}
+		message_num = 0;
+		fputc('\n', listing);
+	}
 }

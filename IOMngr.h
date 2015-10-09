@@ -66,3 +66,5 @@ void PostMessage(int aColumn, const char * aMessage);
 
 int GetCurrentLine();
 int GetCurrentColumn();
+
+void UpdateListingFile();

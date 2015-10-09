@@ -1,7 +1,0 @@
-1) Finish implementations
-
-2) Proofread and consistantly format comments
-
-3) Implement better hash function
-
-4) Make comments more clear in some spots
