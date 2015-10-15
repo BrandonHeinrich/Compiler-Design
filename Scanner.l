@@ -9,8 +9,6 @@ Digit   [0-9]
 		result = (c == EOF) ? YY_NULL : (buf[0] = c, 1); \
 	}
 
-#define RETURN(token) if(nest == 0 && !lineCom) return token
-
 int nest = 0;
 bool lineComment = false;
 bool inComment = false;

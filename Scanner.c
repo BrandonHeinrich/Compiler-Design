@@ -479,12 +479,10 @@ char *yytext;
 		result = (c == EOF) ? YY_NULL : (buf[0] = c, 1); \
 	}
 
-#define RETURN(token) if(nest == 0 && !lineCom) return token
-
 int nest = 0;
 bool lineComment = false;
 bool inComment = false;
-#line 488 "<stdout>"
+#line 486 "<stdout>"
 
 #define INITIAL 0
 
@@ -671,9 +669,9 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
     
-#line 19 "Scanner.l"
+#line 17 "Scanner.l"
 
-#line 677 "<stdout>"
+#line 675 "<stdout>"
 
 	if ( !(yy_init) )
 		{
@@ -758,77 +756,77 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 20 "Scanner.l"
+#line 18 "Scanner.l"
 {if(!lineComment){nest+=1;inComment=true;}}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 21 "Scanner.l"
+#line 19 "Scanner.l"
 {if(!lineComment){nest-=1;if(nest<1){nest=0;inComment=false;}}}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 22 "Scanner.l"
+#line 20 "Scanner.l"
 {if(!inComment){inComment=true;lineComment=true;}}
 	YY_BREAK
 case 4:
 /* rule 4 can match eol */
 YY_RULE_SETUP
-#line 23 "Scanner.l"
+#line 21 "Scanner.l"
 {if(lineComment){lineComment=false; inComment=false;}}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 25 "Scanner.l"
+#line 23 "Scanner.l"
 {if(!inComment) return INIT_TOK;}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 26 "Scanner.l"
+#line 24 "Scanner.l"
 {if(!inComment) return DUMP_TOK;}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 28 "Scanner.l"
+#line 26 "Scanner.l"
 {if(!inComment) return IDENT_TOK;}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 30 "Scanner.l"
+#line 28 "Scanner.l"
 {if(!inComment) return INTEGER_TOK;}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 31 "Scanner.l"
+#line 29 "Scanner.l"
 {if(!inComment) return FLOAT_TOK;}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 33 "Scanner.l"
+#line 31 "Scanner.l"
 {if(!inComment) return LEFT_PAREN_TOK;}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 34 "Scanner.l"
+#line 32 "Scanner.l"
 {if(!inComment) return RIGHT_PAREN_TOK;}
 	YY_BREAK
 case 12:
 /* rule 12 can match eol */
 YY_RULE_SETUP
-#line 36 "Scanner.l"
+#line 34 "Scanner.l"
 {}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 37 "Scanner.l"
+#line 35 "Scanner.l"
 {}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 38 "Scanner.l"
+#line 36 "Scanner.l"
 ECHO;
 	YY_BREAK
-#line 832 "<stdout>"
+#line 830 "<stdout>"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1826,7 +1824,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 38 "Scanner.l"
+#line 36 "Scanner.l"
 
 
 
