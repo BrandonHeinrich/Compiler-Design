@@ -43,6 +43,10 @@ clean:
 	rm *~
 	
 	
+current:
+	git pull
 	
+submit:
+	git push origin master
 	
 	
