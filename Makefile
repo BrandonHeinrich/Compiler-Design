@@ -50,7 +50,7 @@ submit:
 	git push origin master
 	
 turnin:
-    git pull https://github.com/BrandonHeinrich/Compiler-Design.git
-    git push
+	git pull https://github.com/BrandonHeinrich/Compiler-Design.git
+	git push
 	
 	
