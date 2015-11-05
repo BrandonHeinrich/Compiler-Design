@@ -1,4 +1,5 @@
-LOADLIBES = -ll
+LOADLIBES = -ll -ly
+CFLAGS = -g 
 
 # Symbol Table Project
 SymTab.o: SymTab.c SymTab.h
@@ -36,6 +37,10 @@ IntRDScanner: RDScanner.l
 	flex RDScanner.l
 	gcc lex.yy.c -lfl
 	./a.outq
+	
+# Semantics
+Q.o: 	Q.c Grammar.h Scanner.l IOMngr.h 
+Q:	Q.o SymTab.o IOMngr.o QScanner.o QGrammar.o Semantics.o CodeGen.o
 
 # Other
 clean:
