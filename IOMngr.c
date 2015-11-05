@@ -44,6 +44,7 @@ bool OpenFiles(const char *aSourceName, const char *aListingName) {
 }
 
 void CloseFiles() {
+	UpdateListingFile();
 	fclose(source);
 	if(listing != stdout) {
 		fclose(listing);
@@ -75,7 +76,6 @@ char GetSourceChar() {
 }
 
 void PostMessage(int aColumn, const char *aMessage) {
-	//printf("Message for Column: %d", aColumn);
 	if(message_num < 26) {
 		message_position[message_num] = aColumn;
 		strcpy(message[message_num], aMessage);
