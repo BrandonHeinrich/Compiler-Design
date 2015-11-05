@@ -26,7 +26,7 @@ main(int argc, char **argv)
   theTable = CreateSymTab(5);
 	
 	/* open input file */
-	fd = fopen("SymData.txt","r"); 
+	fd = fopen("io/input/SymData.txt","r"); 
 	if (!fd) {
 	  fprintf(stdout,"Can't open input file.\n");
 		exit(1);

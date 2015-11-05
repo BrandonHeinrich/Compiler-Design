@@ -32,7 +32,7 @@ main(int argc, char **argv)
   char message[256];
   struct SymTab * table = NULL;
   
-  bool ret = OpenFiles("ScannerSource", "ScannerListing");
+  bool ret = OpenFiles("io/input/ScannerSource", "io/output/ScannerListing");
   if (!ret) {
     printf("Could not open source and listing files\n");
     exit(1);

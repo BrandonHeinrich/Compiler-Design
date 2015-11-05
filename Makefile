@@ -14,7 +14,7 @@ IOMngr.o: IOMngr.c IOMngr.h
 IOMngrDriver: IOMngrDriver.o IOMngr.o
 
 iotest: IOMngrDriver
-	./IOMngrDriver IOMngrSource IOMngrListing
+	./IOMngrDriver io/input/IOMngrSource io/output/IOMngrListing
 
 # Scanner Project
 ScannerDriver.o: ScannerDriver.c Scanner.h Tokens.h 
@@ -42,15 +42,13 @@ clean:
 	rm *.o SymTabDriver IOMngrDriver ScannerDriver RecDescent
 	rm *~
 	
+testall: SymTabDriver IOMngrDriver ScannerDriver RecDescent
+	./SymTabDriver
+	./IOMngrDriver
+	./ScannerDriver
+	./RecDescent RDSource
+	rm *.o SymTabDriver IOMngrDriver ScannerDriver RecDescent
+	rm *~
 	
-current:
-	git pull
-	
-submit:
-	git push origin master
-	
-turnin:
-	git pull https://github.com/BrandonHeinrich/Compiler-Design.git
-	git push
 	
 	

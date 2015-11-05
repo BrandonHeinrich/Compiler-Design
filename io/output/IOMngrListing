@@ -54,3 +54,7 @@
     -E found uppercase
     -F found punctuation
 
+   10:   }
+         A
+    -A found grouping symbol
+

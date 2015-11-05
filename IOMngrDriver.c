@@ -13,8 +13,8 @@ main(int argc, char **argv)
   char *src, *lst;
   
 	if (argc == 1) {
-	  src = "IOMngrSource";
-		lst = "IOMngrListing";
+	  src = "io/input/IOMngrSource";
+		lst = "io/output/IOMngrListing";
 	}
   else if (argc == 2) {
     src = argv[1];

@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <strings.h>
+#include <string.h>
 
 #include "Scanner.h"
 #include "IOMngr.h"
@@ -16,8 +17,10 @@ main(int argc, char * argv[])
 { char SourceName[256], ListingName[256];
   
   if (argc == 2) {
-    strcpy(SourceName,argv[1]);
-    strcpy(ListingName,argv[1]);
+    strcpy(SourceName, "io/input/");
+    strcpy(ListingName, "io/output/");
+    strcat(SourceName,argv[1]);
+    strcat(ListingName,argv[2]);
     strcat(SourceName,".src");
     strcat(ListingName,".lst");
     OpenFiles(SourceName,ListingName);

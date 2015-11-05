@@ -284,3 +284,6 @@
       A
     -A Token#=6, Length=1, Text="}"
 
+   54: $DUMP      A
+    -A Token#=2, Length=5, Text="$DUMP"
+
