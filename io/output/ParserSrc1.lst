@@ -1,0 +1,6 @@
+    1: BEGIN
+    2:   a := 3; b := 4;
+    3:   c := (a*a) + (b*b);
+    4: END         A
+    -A Parse Successful
+

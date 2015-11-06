@@ -1,19 +1,19 @@
-/* Main of Parser */
-
-#include <strings.h>
+#include <string.h>
 
 #include "Scanner.h"
 #include "IOMngr.h"
 #include "RDTokens.h"
 #include "Grammar.h"
 
-int
-main(int argc, char * argv[])
-{ char SourceName[256], ListingName[256];
+int main(int argc, char *argv[]) {
+  char SourceName[256];
+  char ListingName[256];
   
   if (argc == 2) {
-    strcpy(SourceName,argv[1]);
-    strcpy(ListingName,argv[1]);
+    strcpy(SourceName,"io/input/");
+    strcpy(ListingName,"io/output/");
+    strcat(SourceName,argv[1]);
+    strcat(ListingName,argv[1]);
     strcat(SourceName,".src");
     strcat(ListingName,".lst");
     if (!OpenFiles(SourceName,ListingName)) {
@@ -21,14 +21,13 @@ main(int argc, char * argv[])
        exit(1);
     }
     if (yyparse() == 0) {
-      WriteMessage("Parse Successful");
+      PostMessage(GetCurrentColumn(), "Parse Successful");
     }
     else {
-      WriteMessage("Parse Unsuccessful");
+      PostMessage(GetCurrentColumn(), "Parse Unsuccessful");
     }
     CloseFiles();
-  }
-  else {
+  } else {
     printf("Usage: Parse base-filename\n");
   }
   
