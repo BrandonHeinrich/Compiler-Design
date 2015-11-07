@@ -115,7 +115,7 @@ void UpdateListingFile() {
 				fputc('A' + cur, listing);
 				cur += 1;
 			} else {
-				fputc('_', listing);
+				fputc(' ', listing);
 			}
 		}
 		fputc('\n', listing);

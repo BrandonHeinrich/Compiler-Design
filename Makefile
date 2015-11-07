@@ -44,17 +44,17 @@ test: ParserScanner.l ParserGrammar.y
 	valgrind ./a.out < io/input/ParserScr1.src
 
 Parse: Parse.c flex/ParserScanner.l yacc/ParserGrammar.y Grammar.h Scanner.h RDTokens.h IOMngr.o
-	yacc yacc/ParserGrammar.y
+	bison yacc/ParserGrammar.y
 	flex flex/ParserScanner.l
 	mv lex.yy.c ParserScanner.c
-	mv y.tab.c ParserGrammar.h
+	mv ParserGrammar.tab.c ParserGrammar.h
 	gcc Parse.c ParserScanner.c IOMngr.c -ll -ly
 	mv a.out Parse
 
 # Other
 clean:
-	rm *.o SymTabDriver IOMngrDriver ScannerDriver RecDescent
-	rm *~
+	rm *.o SymTabDriver Parse IOMngrDriver ScannerDriver RecDescent ParserGrammar.h ParserScanner.c
+	
 	
 	
 	
