@@ -44,11 +44,11 @@ test: ParserScanner.l ParserGrammar.y
 	valgrind ./a.out < io/input/ParserScr1.src
 
 Parse: Parse.c flex/ParserScanner.l yacc/ParserGrammar.y Grammar.h Scanner.h RDTokens.h IOMngr.o
-	flex flex/ParserScanner.l
 	yacc yacc/ParserGrammar.y
+	flex flex/ParserScanner.l
 	mv lex.yy.c ParserScanner.c
-	mv y.tab.c ParserGrammar.c
-	gcc Parse.c ParserScanner.c ParserGrammar.c IOMngr.c -ll -ly
+	mv y.tab.c ParserGrammar.h
+	gcc Parse.c ParserScanner.c IOMngr.c -ll -ly
 	mv a.out Parse
 
 # Other

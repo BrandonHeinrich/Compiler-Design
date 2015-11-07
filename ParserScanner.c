@@ -478,7 +478,9 @@ int yy_flex_debug = 0;
 char *yytext;
 #line 1 "flex/ParserScanner.l"
 #line 6 "flex/ParserScanner.l"
-#include "RDTokens.h"
+#include <string.h>
+
+
 #include "IOMngr.h"
 
 #define YY_INPUT(buf,result,max_size) \
@@ -488,10 +490,13 @@ char *yytext;
 
 #define RETURN(token) if(!inComment) return token
 
+char *yyval;
+#include "ParserGrammar.h"
+
 int nest = 0;
 bool lineComment = false;
 bool inComment = false;
-#line 495 "lex.yy.c"
+#line 500 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -678,10 +683,10 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
     
-#line 21 "flex/ParserScanner.l"
+#line 26 "flex/ParserScanner.l"
 
 
-#line 685 "lex.yy.c"
+#line 690 "lex.yy.c"
 
 	if ( !(yy_init) )
 		{
@@ -766,101 +771,101 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 23 "flex/ParserScanner.l"
+#line 28 "flex/ParserScanner.l"
 {}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 25 "flex/ParserScanner.l"
+#line 30 "flex/ParserScanner.l"
 {if(!lineComment){nest+=1;inComment=true;}}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 26 "flex/ParserScanner.l"
+#line 31 "flex/ParserScanner.l"
 {if(!lineComment){nest-=1;if(nest<1){nest=0;inComment=false;}}}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 27 "flex/ParserScanner.l"
+#line 32 "flex/ParserScanner.l"
 {if(!inComment){inComment=true;lineComment=true;}}
 	YY_BREAK
 case 5:
 /* rule 5 can match eol */
 YY_RULE_SETUP
-#line 28 "flex/ParserScanner.l"
+#line 33 "flex/ParserScanner.l"
 {if(lineComment){lineComment=false; inComment=false;}}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 30 "flex/ParserScanner.l"
+#line 35 "flex/ParserScanner.l"
 {RETURN(BEGIN_TOK);}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 31 "flex/ParserScanner.l"
+#line 36 "flex/ParserScanner.l"
 {RETURN(END_TOK);}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 32 "flex/ParserScanner.l"
+#line 37 "flex/ParserScanner.l"
 {RETURN(ASSIGN_TOK);}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 33 "flex/ParserScanner.l"
+#line 38 "flex/ParserScanner.l"
 {RETURN(SEMI_TOK);}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 34 "flex/ParserScanner.l"
+#line 39 "flex/ParserScanner.l"
 {RETURN(LPAREN_TOK);}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 35 "flex/ParserScanner.l"
+#line 40 "flex/ParserScanner.l"
 {RETURN(RPAREN_TOK);}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 36 "flex/ParserScanner.l"
-{RETURN(PLUS_TOK);}
+#line 41 "flex/ParserScanner.l"
+{yyval = malloc(yyleng+1); strcpy(yyval, yytext); RETURN(PLUS_TOK);}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 37 "flex/ParserScanner.l"
-{RETURN(MINUS_TOK);}
+#line 42 "flex/ParserScanner.l"
+{yyval = malloc(yyleng+1); strcpy(yyval, yytext); RETURN(MINUS_TOK);}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 38 "flex/ParserScanner.l"
-{RETURN(TIMES_TOK);}
+#line 43 "flex/ParserScanner.l"
+{yyval = malloc(yyleng+1); strcpy(yyval, yytext); RETURN(TIMES_TOK);}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 39 "flex/ParserScanner.l"
-{RETURN(DIV_TOK);}
+#line 44 "flex/ParserScanner.l"
+{yyval = malloc(yyleng+1); strcpy(yyval, yytext); RETURN(DIV_TOK);}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 40 "flex/ParserScanner.l"
-{RETURN(INTLIT_TOK);}
+#line 45 "flex/ParserScanner.l"
+{yyval = malloc(yyleng+1); strcpy(yyval, yytext); RETURN(INTLIT_TOK);}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 41 "flex/ParserScanner.l"
-{RETURN(IDENT_TOK);}
+#line 46 "flex/ParserScanner.l"
+{yyval = malloc(yyleng+1); strcpy(yyval, yytext); RETURN(IDENT_TOK);}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 42 "flex/ParserScanner.l"
+#line 47 "flex/ParserScanner.l"
 {}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 44 "flex/ParserScanner.l"
+#line 49 "flex/ParserScanner.l"
 ECHO;
 	YY_BREAK
-#line 864 "lex.yy.c"
+#line 869 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1858,7 +1863,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 44 "flex/ParserScanner.l"
+#line 49 "flex/ParserScanner.l"
 
 
 

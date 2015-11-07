@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define YYSTYPE long
+#define YYSTYPE char*
 
 extern int yylex(); /* The next token function. */
 extern char *yytext;/* The matched token text.  */
@@ -62,18 +62,45 @@ Expr    : Term MExpr                                                            
 MExpr   : AddOp Term MExpr                                                      ;
 MExpr   :                                                                       ;
 Term    : Factor MTerm                                                          ;
-MTerm   : MultOp Factor MTerm                                                   ;
+MTerm   : MultOp Factor MTerm {
+    
+};
 MTerm   :                                                                       ;
-Factor  : LPAREN_TOK Expr RPAREN_TOK                                            ;
-Factor  : MINUS_TOK Factor                                                      ;
-Factor  : IntLit                                                                ;
-Factor  : Ident                                                                 ;
-AddOp   : MINUS_TOK                                                             ;
-AddOp   : PLUS_TOK                                                              ;
-MultOp  : TIMES_TOK                                                             ;
-MultOp  : DIV_TOK                                                               ;
-Ident   : IDENT_TOK                                                             ;
-IntLit  : INTLIT_TOK                                                            ;
+Factor  : LPAREN_TOK Expr RPAREN_TOK {
+    $$ = $2;
+    printf("%s",$2);
+};
+Factor  : MINUS_TOK Factor {
+    $$ = malloc(strlen($1)+strlen($2)+1);
+    strcpy($$,$1);
+    strcat($$,$2);
+    free($1);
+    free($2);
+};
+Factor  : IntLit {
+    $$ = $1;
+};
+Factor  : Ident {
+    $$ = $1;
+};
+AddOp   : MINUS_TOK {
+    $$ = $1;
+};
+AddOp   : PLUS_TOK {
+    $$ = $1;
+};
+MultOp  : TIMES_TOK {
+    $$ = $1;
+};
+MultOp  : DIV_TOK {
+    $$ = $1;
+};
+Ident   : IDENT_TOK {
+    $$ = $1;
+};
+IntLit  : INTLIT_TOK {
+    $$ = $1;
+};
 
 %%
 

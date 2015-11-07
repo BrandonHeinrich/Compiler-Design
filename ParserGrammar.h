@@ -68,7 +68,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define YYSTYPE long
+#define YYSTYPE char*
 
 extern int yylex(); /* The next token function. */
 extern char *yytext;/* The matched token text.  */
@@ -478,8 +478,8 @@ static const yytype_uint8 yytranslate[] =
 static const yytype_uint8 yyrline[] =
 {
        0,    57,    57,    58,    59,    60,    61,    62,    63,    64,
-      65,    66,    67,    68,    69,    70,    71,    72,    73,    74,
-      75,    76
+      65,    68,    69,    73,    80,    83,    86,    89,    92,    95,
+      98,   101
 };
 #endif
 
@@ -1267,8 +1267,101 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
-      
-#line 1272 "y.tab.c" /* yacc.c:1646  */
+        case 10:
+#line 65 "yacc/ParserGrammar.y" /* yacc.c:1646  */
+    {
+    
+}
+#line 1276 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 12:
+#line 69 "yacc/ParserGrammar.y" /* yacc.c:1646  */
+    {
+    (yyval) = (yyvsp[-1]);
+    printf("%s",(yyvsp[-1]));
+}
+#line 1285 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 13:
+#line 73 "yacc/ParserGrammar.y" /* yacc.c:1646  */
+    {
+    (yyval) = malloc(strlen((yyvsp[-1]))+strlen((yyvsp[0]))+1);
+    strcpy((yyval),(yyvsp[-1]));
+    strcat((yyval),(yyvsp[0]));
+    free((yyvsp[-1]));
+    free((yyvsp[0]));
+}
+#line 1297 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 14:
+#line 80 "yacc/ParserGrammar.y" /* yacc.c:1646  */
+    {
+    (yyval) = (yyvsp[0]);
+}
+#line 1305 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 15:
+#line 83 "yacc/ParserGrammar.y" /* yacc.c:1646  */
+    {
+    (yyval) = (yyvsp[0]);
+}
+#line 1313 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 16:
+#line 86 "yacc/ParserGrammar.y" /* yacc.c:1646  */
+    {
+    (yyval) = (yyvsp[0]);
+}
+#line 1321 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 17:
+#line 89 "yacc/ParserGrammar.y" /* yacc.c:1646  */
+    {
+    (yyval) = (yyvsp[0]);
+}
+#line 1329 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 18:
+#line 92 "yacc/ParserGrammar.y" /* yacc.c:1646  */
+    {
+    (yyval) = (yyvsp[0]);
+}
+#line 1337 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 19:
+#line 95 "yacc/ParserGrammar.y" /* yacc.c:1646  */
+    {
+    (yyval) = (yyvsp[0]);
+}
+#line 1345 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 20:
+#line 98 "yacc/ParserGrammar.y" /* yacc.c:1646  */
+    {
+    (yyval) = (yyvsp[0]);
+}
+#line 1353 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 21:
+#line 101 "yacc/ParserGrammar.y" /* yacc.c:1646  */
+    {
+    (yyval) = (yyvsp[0]);
+}
+#line 1361 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+
+#line 1365 "y.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1496,7 +1589,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 78 "yacc/ParserGrammar.y" /* yacc.c:1906  */
+#line 105 "yacc/ParserGrammar.y" /* yacc.c:1906  */
 
 
 void yyerror(char *s) {
