@@ -35,20 +35,27 @@ rdtest: RecDescent
 IntRDScanner: RDScanner.l
 	flex RDScanner.l
 	gcc lex.yy.c -lfl
-	./a.outq
+	./a.out
+	
+test: ParserScanner.l ParserGrammar.y
+	flex ParserScanner.l
+	yacc ParserGrammar.y
+	gcc lex.yy.c y.tab.c IOMngr.c -lfl -s
+	valgrind ./a.out < io/input/ParserScr1.src
+
+Parse: Parse.c flex/ParserScanner.l yacc/ParserGrammar.y Grammar.h Scanner.h RDTokens.h IOMngr.o
+	bison yacc/ParserGrammar.y
+	flex flex/ParserScanner.l
+	mv lex.yy.c ParserScanner.c
+	mv ParserGrammar.tab.c ParserGrammar.h
+	gcc Parse.c ParserScanner.c IOMngr.c -ll -ly
+	mv a.out Parse
 
 # Other
 clean:
-	rm *.o SymTabDriver IOMngrDriver ScannerDriver RecDescent
-	rm *~
+	rm *.o SymTabDriver Parse IOMngrDriver ScannerDriver RecDescent ParserGrammar.h ParserScanner.c
 	
-testall: SymTabDriver IOMngrDriver ScannerDriver RecDescent
-	./SymTabDriver
-	./IOMngrDriver
-	./ScannerDriver
-	./RecDescent RDSource
-	rm *.o SymTabDriver IOMngrDriver ScannerDriver RecDescent
-	rm *~
+	
 	
 	
 	

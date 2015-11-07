@@ -76,7 +76,10 @@ char GetSourceChar() {
 }
 
 void PostMessage(int aColumn, const char *aMessage) {
-	if(message_num < 26) {
+	if(message_num > 0 && message_num < 27 && message_position[message_num-1] == aColumn) {
+		strcat(message[message_num-1], "\n     | ");
+		strcat(message[message_num-1], aMessage);
+	} else if(message_num < 26) {
 		message_position[message_num] = aColumn;
 		strcpy(message[message_num], aMessage);
 		message_num += 1;
@@ -108,7 +111,6 @@ void UpdateListingFile() {
 		int i;
 		int cur = 0;
 		for(i=0; cur < message_num; i+=1) {
-			//printf("i: %d cur: %d num: %d message_pos: %d\n", i, cur, message_num, message_position[cur]);
 			if(i == message_position[cur]) {
 				fputc('A' + cur, listing);
 				cur += 1;

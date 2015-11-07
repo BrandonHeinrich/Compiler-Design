@@ -1,0 +1,27 @@
+    1: BEGIN
+    2:   a := 3; b := 4;
+         A    BC D    EF
+    -A Found Identifier
+    -B Found Integer Literal
+    -C Found Statement
+    -D Found Identifier
+    -E Found Integer Literal
+    -F Found Statement
+
+    3:   c := (a*a) + (b*b);
+         A     BCDEF   GHIJK
+    -A Found Identifier
+    -B Found Identifier
+    -C Found Operator
+    -D Found Identifier
+    -E Found Parenthesized Expression
+    -F Found Operator
+    -G Found Identifier
+    -H Found Operator
+    -I Found Identifier
+    -J Found Parenthesized Expression
+    -K Found Statement
+
+    4: END         A
+    -A Parse Successful
+
