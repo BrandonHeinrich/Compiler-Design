@@ -1,0 +1,25 @@
+/*
+  Input a number and calculate its factorial.
+*/
+int x, y;
+
+main
+{
+  put("> ");
+  x = get(int);
+  put("> ");
+  y = get(int);
+  put("x = "); put(x); put("\n");
+  put("y = "); put(y); put("\n");
+
+  while (x ## y) {
+    if (x < y) {
+      y = y - x;
+    }
+    else {
+      x = x - y;
+    };
+  };
+
+  put("gcd = "); put(x); put("\n");
+}

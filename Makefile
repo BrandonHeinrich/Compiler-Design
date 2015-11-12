@@ -1,4 +1,5 @@
-LOADLIBES = -ll
+LOADLIBES = -ll -ly
+CFLAGS = -g 
 
 # Symbol Table Project
 SymTab.o: SymTab.c SymTab.h
@@ -50,6 +51,11 @@ Parse: Parse.c flex/ParserScanner.l yacc/ParserGrammar.y Grammar.h Scanner.h RDT
 	mv ParserGrammar.tab.c ParserGrammar.h
 	gcc Parse.c ParserScanner.c IOMngr.c -ll -ly
 	mv a.out Parse
+	./a.outq
+	
+# Semantics
+Q.o: 	Q.c Grammar.h Scanner.l IOMngr.h 
+Q:	Q.o SymTab.o IOMngr.o QScanner.o QGrammar.o Semantics.o CodeGen.o
 
 # Other
 clean:
