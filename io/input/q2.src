@@ -1,0 +1,15 @@
+int x, y, z;
+
+main
+{
+  x = 5 + 2 / 3;
+  y = x * x - 4;
+  put("> ");
+  z = get(int);
+  put("x = ");
+  put(x);
+  put("\n");
+  put("y * z = ");
+  put(y * z);
+  put("\n");
+}
