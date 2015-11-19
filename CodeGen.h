@@ -1,9 +1,12 @@
+#ifndef __CODEGEN__
+#define __CODEGEN__
 /* CodeGen.h
    Routines to support the generation of assembly code.
    
 */
 
 #include <stdio.h>
+#include <string.h>
 
 struct InstrSeq {
   char *Label;
@@ -16,7 +19,7 @@ struct InstrSeq {
 
 extern void InitCodeGen(char *AFilename);
 
-extern struct InstrSeq  GenInstr(char *Label, char *OpCode, char *Oprnd1, char *Oprnd2, char *Oprnd3);
+extern struct InstrSeq *GenInstr(char *Label, char *OpCode, char *Oprnd1, char *Oprnd2, char *Oprnd3);
 extern struct InstrSeq *AppendSeq(struct InstrSeq *Seq1, struct InstrSeq *Seq2);
 extern void WriteSeq(struct InstrSeq *ASeq);
 
@@ -31,3 +34,5 @@ extern struct InstrSeq *RestoreSeq();
 
 extern char *Imm(int Val);
 extern char *RegOff(int Offset, char * Reg);
+
+#endif

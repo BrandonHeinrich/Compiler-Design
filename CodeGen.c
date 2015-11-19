@@ -38,8 +38,7 @@ CopyStr(char * AStr)
   return (AStr) ? strdup(AStr) : NULL;
 }
 
-struct InstrSeq * 	  
-GenInstr(char *Label, char *OpCode, char *Oprnd1, char *Oprnd2, char *Oprnd3)
+struct InstrSeq *GenInstr(char *Label, char *OpCode, char *Oprnd1, char *Oprnd2, char *Oprnd3)
 { struct InstrSeq *instr;
   
   instr = malloc(sizeof(struct InstrSeq));

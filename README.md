@@ -27,7 +27,7 @@ You will need to create the following
  - The lex/flex input describing the tokens required by the parser. You can create this from previous versions. It should include the comment nesting capabilities contained in the previous versions.
  
 
-In addiiton to these, this project will reuse the previous RDTokens.h and Scanner.h files. 
+## The Assignment
 
 - Step 1, 20 pts
   - Implement the necessary semantic actions for variable declarations. Create a test program, q1.src to exercise this part. 
@@ -53,9 +53,17 @@ In addiiton to these, this project will reuse the previous RDTokens.h and Scanne
 
 - Step 3, 20 pts
  - Add rules and semantic actions for "if/then/else" and "while" loops. Create a test program to exercise this part. 
+ - Notes on most of the things you need to do and remember
+        - need a CondResult struct similiar to ExprResult, remembers the code sequence and the label used in the conditional branch instruction
+        - conditional branch is opposite of the comparison operator, instructions are bge, bg, ble,bl, bne, beq
+        - common syntax does allow for dangling else, yacc give shift/reduce warning but prefers shift over the reduce which effectively ties an else to the inner if
+        - if/then/else uses label generate by condition as first thing following then sequence, when an else clause is present, then sequence ends with branch to new label which follows the else sequence and the condition label comes at the beginning of the else clause
+        - while needs label at start of condition instruction sequence, conditional branch label follows the body, the body ends with a branch to the top of the loop
 
 - Step 4, 20 pts
  - Add rules and semantic actions to allow string literals in put() statements. Create a test program to exercise this. 
+ - Notes on most of the things you need to do and remember
+        - use symbol table to hold string literals, need different attribute record for string literals than the one used for identifiers, for string literals the attribute remembers the label used for the string literal in the data section
 
 ## What To Do
 

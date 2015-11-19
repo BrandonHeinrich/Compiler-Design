@@ -5,7 +5,7 @@
 #include "CodeGen.h"
 #include "IOMngr.h"
 
-extern int yyparse;
+extern int yyparse();
 
 int main(int argc, char **argv) {
     char *filename;
@@ -13,6 +13,8 @@ int main(int argc, char **argv) {
     char source[255];
     char listing[255];
     char assembly[255];
+    
+    
     
     if(argc == 2) {
         filename = argv[1];
@@ -25,11 +27,13 @@ int main(int argc, char **argv) {
         strcat(listing, filename);
         strcat(assembly, filename);
         
-        strcat(source, ".src"");
+        strcat(source, ".src");
         strcat(listing, ".lst");
         strcat(assembly, ".asm");
         
-        OpenFiles(source, listing);
+        if(!OpenFiles(source, listing)) {
+            printf("SOMETHING FUCKED UP\n");
+        }
         InitCodeGen(assembly);
         
         switch(yyparse()) {
@@ -38,14 +42,18 @@ int main(int argc, char **argv) {
                 break;
             case 1:
                 PostMessage(GetCurrentColumn(), "COMPILATION FAILED - BAD INPUT");
+                printf("COMPILATION FAILED - BAD INPUT\n");
                 break;
             case 2:
                 PostMessage(GetCurrentColumn(), "COMPILATION FAILED - OUT OF MEMORY");
+                printf("COMPILATION FAILED - OUT OF MEMORY\n");
                 break;
             default:
                 PostMessage(GetCurrentColumn(), "SOMETHING UNEXPECTED HAPPENED");
+                printf("SOMETHING UNEXPECTED HAPPENED\n");
                 break;
         }
+        UpdateListingFile();
     } else {
         printf("Useage: Q <SourceName>");
     }

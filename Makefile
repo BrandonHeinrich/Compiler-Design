@@ -49,13 +49,22 @@ Parse: Parse.c flex/ParserScanner.l yacc/ParserGrammar.y Grammar.h Scanner.h RDT
 	flex flex/ParserScanner.l
 	mv lex.yy.c ParserScanner.c
 	mv ParserGrammar.tab.c ParserGrammar.h
-	gcc Parse.c ParserScanner.c IOMngr.c -ll -ly
+	gcc Parse.c ParserScanner.c IOMngr.o -ll -ly
 	mv a.out Parse
-	./a.outq
 	
 # Semantics
 Q.o: 	Q.c Grammar.h Scanner.l IOMngr.h 
 Q:	Q.o SymTab.o IOMngr.o QScanner.o QGrammar.o Semantics.o CodeGen.o
+
+CodeGen.o: CodeGen.c CodeGen.h
+
+
+MyQCompiler: QCompile.c flex/QScanner.l yacc/QGrammar.y IOMngr.o SymTab.o CodeGen.o
+	bison yacc/QGrammar.y
+	lex flex/QScanner.l
+	mv lex.yy.c QScanner.c
+	mv QGrammar.tab.c QGrammar.h
+	gcc QCompile.c QScanner.c IOMngr.o SymTab.o CodeGen.o -ll -ly
 
 # Other
 clean:

@@ -53,7 +53,6 @@ void CloseFiles() {
 
 char GetSourceChar() {
 	char next = fgetc(source);
-
 	if(next == '\t') next = ' ';
 
 	switch(next) {
@@ -101,10 +100,14 @@ void UpdateListingFile() {
 		int i;
 		for(i=0; i<column; i+=1) {
 			fputc(buffer[i], listing);
+			if(buffer[i] == '\n') {
+				break;
+			}
 		}
 	}
 	line += 1;
 	column = 0;
+	
 
 	if(message_num > 0) {
 		fprintf(listing, "      ");
