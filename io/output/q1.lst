@@ -1,28 +1,8 @@
     1: char abc, bc, a;
-           A   B   C  D
-    -A Found Character Type!
-    -B Found Identifier!
-    -C Found Identifier!
-    -D Found Identifier!
-     | Found ID List!
-     | Found Declaration!
-
     2: int x, y;
-          A B  C
-    -A Found Integer Type!
-    -B Found Identifier!
-    -C Found Identifier!
-     | Found ID List!
-     | Found Declaration!
-
     3: main 
     4: {
-       A
-    -A Found Statement Sequence!
-
     5: }
-       AB
-    -A Found Body!
-     | Found Program!
-    -B COMPILATION SUCSESSFUL
+        A
+    -A COMPILATION SUCSESSFUL
 

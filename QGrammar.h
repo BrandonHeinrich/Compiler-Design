@@ -68,12 +68,13 @@
 #include "Scanner.h"
 #include "Semantics.h"
 #include "CodeGen.h"
+#include "Semantics.h"
 #include <string.h>
 
 void yyerror(char *s);
 
 
-#line 77 "QGrammar.tab.c" /* yacc.c:339  */
+#line 78 "QGrammar.tab.c" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -118,7 +119,18 @@ extern int yydebug;
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef int YYSTYPE;
+typedef union YYSTYPE YYSTYPE;
+union YYSTYPE
+{
+#line 14 "yacc/QGrammar.y" /* yacc.c:355  */
+
+    char *Text;
+    struct IdList *IdList;
+    struct TypeDesc *TypeDesc;
+    struct InstrSeq *InstrSeq;
+
+#line 133 "QGrammar.tab.c" /* yacc.c:355  */
+};
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
 #endif
@@ -132,7 +144,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 136 "QGrammar.tab.c" /* yacc.c:358  */
+#line 148 "QGrammar.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -381,7 +393,7 @@ union yyalloc
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  9
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  13
+#define YYNRULES  12
 /* YYNSTATES -- Number of states.  */
 #define YYNSTATES  20
 
@@ -430,8 +442,8 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    32,    32,    38,    42,    46,    52,    58,    64,    68,
-      74,    80,    86,    92
+       0,    44,    44,    51,    63,    70,    74,    78,    82,    86,
+      92,    99,   105
 };
 #endif
 
@@ -457,10 +469,10 @@ static const yytype_uint16 yytoknum[] =
 };
 # endif
 
-#define YYPACT_NINF -11
+#define YYPACT_NINF -7
 
 #define yypact_value_is_default(Yystate) \
-  (!!((Yystate) == (-11)))
+  (!!((Yystate) == (-7)))
 
 #define YYTABLE_NINF -1
 
@@ -471,8 +483,8 @@ static const yytype_uint16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-      -5,   -11,   -11,     2,    -4,    -5,     1,   -11,    -3,   -11,
-     -11,   -11,    -2,     3,   -11,   -11,     1,     0,   -11,   -11
+      -3,    -7,    -7,     1,    -2,    -3,     4,    -7,     0,    -7,
+      -7,    -7,    -4,    -7,    -7,     4,    -7,    -5,    -7,    -7
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -480,14 +492,14 @@ static const yytype_int8 yypact[] =
      means the default is an error.  */
 static const yytype_uint8 yydefact[] =
 {
-       4,     6,     7,     0,     0,     4,    10,     1,     0,     2,
-       3,    11,     0,     9,    13,     5,    10,     0,     8,    12
+       4,     6,     7,     0,     0,     4,     0,     1,     0,     2,
+       3,    10,     0,     9,    12,     0,     5,     0,     8,    11
 };
 
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -11,   -11,     5,   -11,   -11,   -10,   -11,   -11,   -11
+      -7,    -7,     5,    -7,    -7,    -7,    -6,    -7,    -7
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
@@ -501,13 +513,13 @@ static const yytype_int8 yydefgoto[] =
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_uint8 yytable[] =
 {
-       1,     2,     7,     8,    11,    14,    18,    16,    15,    19,
+      15,     7,     1,     2,    19,     8,    16,    11,    14,    18,
       10
 };
 
 static const yytype_uint8 yycheck[] =
 {
-       5,     6,     0,     7,     3,     8,    16,     4,    10,     9,
+       4,     0,     5,     6,     9,     7,    10,     3,     8,    15,
        5
 };
 
@@ -516,21 +528,21 @@ static const yytype_uint8 yycheck[] =
 static const yytype_uint8 yystos[] =
 {
        0,     5,     6,    12,    13,    14,    15,     0,     7,    18,
-      13,     3,    16,    17,     8,    10,     4,    19,    16,     9
+      13,     3,    16,    17,     8,     4,    10,    19,    17,     9
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_uint8 yyr1[] =
 {
        0,    11,    12,    13,    13,    14,    15,    15,    16,    16,
-      16,    17,    18,    19
+      17,    18,    19
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
 static const yytype_uint8 yyr2[] =
 {
        0,     2,     2,     2,     0,     3,     1,     1,     3,     1,
-       0,     1,     4,     0
+       1,     4,     0
 };
 
 
@@ -1207,79 +1219,107 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 32 "yacc/QGrammar.y" /* yacc.c:1646  */
+#line 44 "yacc/QGrammar.y" /* yacc.c:1646  */
     {
-    PostMessage(GetCurrentColumn(), "Found Program!");
+    //PostMessage(GetCurrentColumn(), "Found Program!");
+    Finish((yyvsp[-1].InstrSeq), (yyvsp[0].InstrSeq));
 }
-#line 1215 "QGrammar.tab.c" /* yacc.c:1646  */
+#line 1228 "QGrammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 3:
+#line 51 "yacc/QGrammar.y" /* yacc.c:1646  */
+    {
+    (yyval.InstrSeq) = (yyvsp[-1].InstrSeq);
+    struct InstrSeq *tail = (yyval.InstrSeq);
+    while(tail->Next != NULL) {
+        tail = tail->Next;
+    }
+    tail->Next = (yyvsp[0].InstrSeq);
+    //PostMessage(GetCurrentColumn(), "Found decls!");
+}
+#line 1242 "QGrammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 4:
+#line 63 "yacc/QGrammar.y" /* yacc.c:1646  */
+    {
+    (yyval.InstrSeq) = NULL;
+    //PostMessage(GetCurrentColumn(), "Found empty decls!");
+}
+#line 1251 "QGrammar.tab.c" /* yacc.c:1646  */
     break;
 
   case 5:
-#line 46 "yacc/QGrammar.y" /* yacc.c:1646  */
+#line 70 "yacc/QGrammar.y" /* yacc.c:1646  */
     {
-    PostMessage(GetCurrentColumn(), "Found Declaration!");
+    //PostMessage(GetCurrentColumn(), "Found Declaration!");
+    (yyval.InstrSeq) = ProcDecl((yyvsp[-1].IdList),(yyvsp[-2].TypeDesc));
 }
-#line 1223 "QGrammar.tab.c" /* yacc.c:1646  */
+#line 1260 "QGrammar.tab.c" /* yacc.c:1646  */
     break;
 
   case 6:
-#line 52 "yacc/QGrammar.y" /* yacc.c:1646  */
+#line 74 "yacc/QGrammar.y" /* yacc.c:1646  */
     {
-    PostMessage(GetCurrentColumn(), "Found Integer Type!");
+    //PostMessage(GetCurrentColumn(), "Found Integer Type!");
+    (yyval.TypeDesc) = ProcTypeDesc(IntBaseType);
 }
-#line 1231 "QGrammar.tab.c" /* yacc.c:1646  */
+#line 1269 "QGrammar.tab.c" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 58 "yacc/QGrammar.y" /* yacc.c:1646  */
+#line 78 "yacc/QGrammar.y" /* yacc.c:1646  */
     {
-    PostMessage(GetCurrentColumn(), "Found Character Type!");
+    //PostMessage(GetCurrentColumn(), "Found Character Type!");
+    (yyval.TypeDesc) = ProcTypeDesc(ChrBaseType);
 }
-#line 1239 "QGrammar.tab.c" /* yacc.c:1646  */
+#line 1278 "QGrammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 8:
+#line 82 "yacc/QGrammar.y" /* yacc.c:1646  */
+    {
+    (yyval.IdList) = ChainIdentifier((yyvsp[-2].IdList),(yyvsp[0].Text));
+}
+#line 1286 "QGrammar.tab.c" /* yacc.c:1646  */
     break;
 
   case 9:
-#line 68 "yacc/QGrammar.y" /* yacc.c:1646  */
+#line 86 "yacc/QGrammar.y" /* yacc.c:1646  */
     {
-    PostMessage(GetCurrentColumn(), "Found ID List!");
+    (yyval.IdList) = ProduceIdentifier((yyvsp[0].Text));
 }
-#line 1247 "QGrammar.tab.c" /* yacc.c:1646  */
+#line 1294 "QGrammar.tab.c" /* yacc.c:1646  */
     break;
 
   case 10:
-#line 74 "yacc/QGrammar.y" /* yacc.c:1646  */
+#line 92 "yacc/QGrammar.y" /* yacc.c:1646  */
     {
-    PostMessage(GetCurrentColumn(), "Found ID List!");
+    //PostMessage(GetCurrentColumn(), "Found Identifier!");
+    (yyval.Text) = strdup(yytext);
 }
-#line 1255 "QGrammar.tab.c" /* yacc.c:1646  */
+#line 1303 "QGrammar.tab.c" /* yacc.c:1646  */
     break;
 
   case 11:
-#line 80 "yacc/QGrammar.y" /* yacc.c:1646  */
+#line 99 "yacc/QGrammar.y" /* yacc.c:1646  */
     {
-    PostMessage(GetCurrentColumn(), "Found Identifier!");
+    //PostMessage(GetCurrentColumn(), "Found Body!");
 }
-#line 1263 "QGrammar.tab.c" /* yacc.c:1646  */
+#line 1311 "QGrammar.tab.c" /* yacc.c:1646  */
     break;
 
   case 12:
-#line 86 "yacc/QGrammar.y" /* yacc.c:1646  */
+#line 105 "yacc/QGrammar.y" /* yacc.c:1646  */
     {
-    PostMessage(GetCurrentColumn(), "Found Body!");
+    //PostMessage(GetCurrentColumn(), "Found Statement Sequence!");
 }
-#line 1271 "QGrammar.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 13:
-#line 92 "yacc/QGrammar.y" /* yacc.c:1646  */
-    {
-    PostMessage(GetCurrentColumn(), "Found Statement Sequence!");
-}
-#line 1279 "QGrammar.tab.c" /* yacc.c:1646  */
+#line 1319 "QGrammar.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1283 "QGrammar.tab.c" /* yacc.c:1646  */
+#line 1323 "QGrammar.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1507,12 +1547,10 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 98 "yacc/QGrammar.y" /* yacc.c:1906  */
+#line 111 "yacc/QGrammar.y" /* yacc.c:1906  */
 
 
-void
-yyerror( char *s)
-{
+void yyerror(char *s) {
   char msg[MAXLINE];
   sprintf(msg,"ERROR \"%s\" token: \"%s\"",s,yytext);
   PostMessage(GetCurrentColumn(),msg);

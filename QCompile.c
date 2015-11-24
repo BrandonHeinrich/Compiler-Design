@@ -34,7 +34,9 @@ int main(int argc, char **argv) {
         if(!OpenFiles(source, listing)) {
             printf("SOMETHING FUCKED UP\n");
         }
+        
         InitCodeGen(assembly);
+        InitSemantics();
         
         switch(yyparse()) {
             case 0:

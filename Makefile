@@ -58,17 +58,20 @@ Q:	Q.o SymTab.o IOMngr.o QScanner.o QGrammar.o Semantics.o CodeGen.o
 
 CodeGen.o: CodeGen.c CodeGen.h
 
+Semantics.o: Semantics.h Semantics.h
 
-MyQCompiler: QCompile.c flex/QScanner.l yacc/QGrammar.y IOMngr.o SymTab.o CodeGen.o
+
+MyQCompiler: QCompile.c flex/QScanner.l yacc/QGrammar.y IOMngr.o SymTab.o CodeGen.o Semantics.o
 	bison yacc/QGrammar.y
 	lex flex/QScanner.l
 	mv lex.yy.c QScanner.c
 	mv QGrammar.tab.c QGrammar.h
-	gcc QCompile.c QScanner.c IOMngr.o SymTab.o CodeGen.o -ll -ly
+	gcc QCompile.c QScanner.c IOMngr.o SymTab.o CodeGen.o Semantics.o -ll -ly
 
 # Other
 clean:
 	rm *.o SymTabDriver Parse IOMngrDriver ScannerDriver RecDescent ParserGrammar.h ParserScanner.c
+	clear
 	
 	
 	

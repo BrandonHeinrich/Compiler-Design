@@ -1,3 +1,5 @@
+#ifndef __SEMANTICS__H__
+#define __SEMANTICS__H__
 /* Semantics.h
    The action and supporting routines for performing semantics processing.
 */
@@ -9,8 +11,8 @@
 
 /* Declaration of semantic record data types used in grammar.y %union */
 struct IdList {
-  struct SymEntry * TheEntry;
-  struct IdList * Next;
+  struct SymEntry *TheEntry;
+  struct IdList *Next;
 };
 
 enum BaseTypes {
@@ -34,8 +36,10 @@ void InitSemantics();
 void ListSymTab();
 
 /* Semantics Actions */
-struct IdList *ProcUndId(char * IdText);
-struct IdList *ChainUndId(struct IdList *TheList, char *IdText);
+struct IdList *ProduceIdentifier(char * IdText);
+struct IdList *ChainIdentifier(struct IdList *TheList, char *IdText);
 struct InstrSeq *ProcDecl(struct IdList *TheList, struct TypeDesc *TheType);
 struct TypeDesc *ProcTypeDesc(enum BaseTypes TheBaseType);
 void Finish(struct InstrSeq *DeclsCode, struct InstrSeq *BodyCode);
+
+#endif
