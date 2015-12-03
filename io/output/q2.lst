@@ -1,0 +1,17 @@
+    1: int x, y, z;
+    2: main
+    3: {
+    4:   x = 5 + 2 / 3;
+    5:   y = x * x - 4;
+    6:   put("> ");
+    7:   z = get(int);
+    8:   put("x = ");
+    9:   put(x);
+   10:   put("\n");
+   11:   put("y * z = ");
+   12:   put(y*z);
+   13:   put("\n");
+   14: }
+        A
+    -A COMPILATION SUCSESSFUL
+

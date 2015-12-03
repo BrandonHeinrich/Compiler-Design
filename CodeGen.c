@@ -89,7 +89,11 @@ GenLabel()
 { char *label;
 
   label = (char *) malloc(8);
-  sprintf(label,"L%d",NextLabel++);
+  sprintf(label,"L%d",NextLabel);
+  
+  printf("Label Gen: %d\n", NextLabel);
+  
+  NextLabel += 1;
   
   return label;
 }

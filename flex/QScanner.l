@@ -14,18 +14,50 @@ NZDigit [1-9]
 char *yyval;
 
 #include "QGrammar.h"
+
+int nest = 0;
+bool lineComment = false;
+bool inComment = false;
+#define RETURN if(!inComment) return
 %}
 
 %%
-";"             {return SEMI_TOK;}
-" "|"\t"|"\n"   {}
-"main"          {return MAIN_TOK;}
-"{"             {return LBRACE_TOK;}
-"}"             {return RBRACE_TOK;}
-"int"           {return INT_TOK;}
-"char"          {return CHAR_TOK;}
-","             {return COMMA_TOK;}
-{Letter}*       {return IDENT_TOK;}
+" "|"\t" {}
+
+"/*"    {if(!lineComment){nest+=1;inComment=true;}}
+"*/"    {if(!lineComment){nest-=1;if(nest<1){nest=0;inComment=false;}}}
+"//"    {if(!inComment){inComment=true;lineComment=true;}}
+"\n"    {if(lineComment){lineComment=false; inComment=false;}}
+
+";"                 {RETURN SEMI_TOK;}
+"="                 {RETURN ASSIGN_TOK;}
+"+"                 {RETURN PLUS_TOK;}
+"-"                 {RETURN MINUS_TOK;}
+"*"                 {RETURN TIMES_TOK;}
+"/"                 {RETURN DIV_TOK;}
+
+">"                 {RETURN GREATER_TOK;}
+">="                 {RETURN GREATEREQ_TOK;}
+"<"                 {RETURN LESS_TOK;}
+"<="                 {RETURN LESSEQ_TOK;}
+"=="                 {RETURN EQUAL_TOK;}
+"!="                 {RETURN NOTEQUAL_TOK;}
+
+"main"              {RETURN MAIN_TOK;}
+"while"             {RETURN WHILE_TOK;}
+"get"               {RETURN GET_TOK;}
+"put"               {RETURN PUT_TOK;}
+
+"{"                 {RETURN LBRACE_TOK;}
+"}"                 {RETURN RBRACE_TOK;}
+"("                 {RETURN LPAREN_TOK;}
+")"                 {RETURN RPAREN_TOK;}
+"int"               {RETURN INT_TOK;}
+"char"              {RETURN CHAR_TOK;}
+","                 {RETURN COMMA_TOK;}
+{Letter}*           {RETURN IDENT_TOK;}
+{Digit}*            {RETURN INT_LIT_TOK;}
+\"(\\.|[^\\"])*\"   {RETURN STR_LIT_TOK;}
 
 .           {PostMessage(GetCurrentColumn(), "UNKNOWN CHARACTER");}
 

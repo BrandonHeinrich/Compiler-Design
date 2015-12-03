@@ -1,3 +1,4 @@
+	.text	
 	.data	
 _abc:	.word		0
 _bc:	.word		0

@@ -12,8 +12,11 @@ struct SymTab *IdentSymTab;
 
 char *BaseTypeNames[2] = {"Int", "Char"};
 
+struct InstrSeq *Literals = NULL;
+
 /* Semantics support routines */
 void InitSemantics() {
+    StringNum = 0;
     IdentSymTab = CreateSymTab(100);
 }
 
@@ -44,6 +47,14 @@ struct IdList *ProduceIdentifier(char * IdText) {
     EnterName(IdentSymTab, IdText, &(result->TheEntry));
     // Not linked
     result->Next = NULL;
+    
+    // Put Attr in entry
+    struct Attr *attributes = malloc(sizeof(struct Attr));
+    attributes->Label = strdup(IdText);
+    attributes->TypeDesc = malloc(sizeof(struct TypeDesc));
+    attributes->TypeDesc->BaseType = IntBaseType;
+    SetAttr(result->TheEntry, attributes);
+    
     // Return IdList
     return result;
 }
@@ -55,18 +66,28 @@ struct IdList *ChainIdentifier(struct IdList *TheList, char *IdText) {
     EnterName(IdentSymTab, IdText, &(result->TheEntry));
     // Link it to next list
     result->Next = TheList;
+    
+    // Put Attr in entry
+    struct Attr *attributes = malloc(sizeof(struct Attr));
+    attributes->Label = strdup(IdText);
+    attributes->TypeDesc = malloc(sizeof(struct TypeDesc));
+    attributes->TypeDesc->BaseType = IntBaseType;
+    SetAttr(result->TheEntry, attributes);
+    
     // Return IdList
     return result;
 }
 
 struct InstrSeq *ProcDecl(struct IdList *TheList, struct TypeDesc *TheType) {
     struct InstrSeq* declaration = NULL;
+    
     while(TheList != NULL) {
-        printf("Looping for (%s)\n", TheList->TheEntry->name);
-        
+        // Create Instruction at begin of declaration
         struct InstrSeq* temp = malloc(sizeof(struct InstrSeq));
         temp->Next = declaration;
         declaration = temp;
+        
+        // Declare fields for instruction
         declaration->Label = strdup("_");
         strcat(declaration->Label, TheList->TheEntry->name);
         declaration->OpCode = strdup(".word");
@@ -74,9 +95,12 @@ struct InstrSeq *ProcDecl(struct IdList *TheList, struct TypeDesc *TheType) {
         declaration->Oprnd2 = NULL;
         declaration->Oprnd3 = NULL;
         
+        // Set the type of this variable.
+        ((struct Attr *) GetAttr(TheList->TheEntry))->TypeDesc = TheType;
+        
+        // Access the next element in the list
         TheList = TheList->Next;
     }
-    printf("\n");
     
     return declaration;
 }
@@ -87,15 +111,16 @@ struct TypeDesc *ProcTypeDesc(enum BaseTypes TheBaseType) {
     return result;
 }
 
-void Finish(struct InstrSeq * DeclsCode, struct InstrSeq * BodyCode) {
-    printf("Finish\n");
-    
-    //ListSymTab();
+void Finish(struct InstrSeq *DeclsCode, struct InstrSeq *BodyCode) {
+    ListSymTab();
     
     struct InstrSeq * finalCode;
     
-    finalCode = GenInstr(NULL,".data",NULL,NULL,NULL);
-    AppendSeq(finalCode,DeclsCode);
+    finalCode = GenInstr(NULL,".text",NULL,NULL,NULL);
+    AppendSeq(finalCode, BodyCode);
+    AppendSeq(finalCode, GenInstr(NULL,".data",NULL,NULL,NULL));
+    AppendSeq(finalCode, DeclsCode);
+    AppendSeq(finalCode, Literals);
     
     WriteSeq(finalCode);
     
@@ -109,4 +134,27 @@ void Finish(struct InstrSeq * DeclsCode, struct InstrSeq * BodyCode) {
     // DeclsCode and concatenate with remainder of code or enumerate symbol table now and generate
     // data segment statement for variables
     DestroySymTab(IdentSymTab);
+}
+
+
+
+
+
+
+
+
+void StringLiteral(char *String) {
+    // Create New ID Number For This String
+    StringNum += 1;
+    
+    // Create Label
+    char label[10];
+    sprintf(label, "_STR_%d", StringNum);
+    
+    // Create Instruction For String
+    struct InstrSeq *temp = GenInstr(label, ".asciiz", String, NULL, NULL);
+    
+    // Prepend Instructon
+    temp->Next = Literals;
+    Literals = temp;
 }

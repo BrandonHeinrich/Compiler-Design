@@ -74,6 +74,23 @@ clean:
 	clear
 	
 	
+q1: QCompile.c flex/QScanner.l yacc/QGrammar.y IOMngr.o SymTab.o CodeGen.o Semantics.o
+	make MyQCompiler
+	./a.out q1
+	java -jar mars.jar nc io/output/q1.asm
 	
+q2: QCompile.c flex/QScanner.l yacc/QGrammar.y IOMngr.o SymTab.o CodeGen.o Semantics.o
+	make MyQCompiler
+	./a.out q2
+	java -jar mars.jar nc io/output/q2.asm
+
+q3: QCompile.c flex/QScanner.l yacc/QGrammar.y IOMngr.o SymTab.o CodeGen.o Semantics.o
+	make MyQCompiler
+	./a.out q3
+	java -jar mars.jar nc io/output/q3.asm
 	
+q4: QCompile.c flex/QScanner.l yacc/QGrammar.y IOMngr.o SymTab.o CodeGen.o Semantics.o
+	make MyQCompiler
+	./a.out q4
+	java -jar mars.jar nc io/output/q4.asm
 	
