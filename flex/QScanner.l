@@ -47,6 +47,8 @@ bool inComment = false;
 "while"             {RETURN WHILE_TOK;}
 "get"               {RETURN GET_TOK;}
 "put"               {RETURN PUT_TOK;}
+"if"                {RETURN IF_TOK;}
+"else"              {RETURN ELSE_TOK;}
 
 "{"                 {RETURN LBRACE_TOK;}
 "}"                 {RETURN RBRACE_TOK;}
@@ -59,6 +61,6 @@ bool inComment = false;
 {Digit}*            {RETURN INT_LIT_TOK;}
 \"(\\.|[^\\"])*\"   {RETURN STR_LIT_TOK;}
 
-.           {PostMessage(GetCurrentColumn(), "UNKNOWN CHARACTER");}
+.           {if(!inComment) PostMessage(GetCurrentColumn(), "UNKNOWN CHARACTER");}
 
 %%

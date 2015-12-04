@@ -1,0 +1,117 @@
+    1: /*
+    2:   Input a number and calculate its factorial.
+    3: */
+    4: int x, y;
+    5: main
+    6: {
+    7:   put("> ");
+             A    B
+    -A StringLiteral
+    -B End of Statement
+
+    8:   x = get(int);
+                    AB
+    -A Singular factor
+    -B End of Statement
+
+    9:   put("> ");
+             A    B
+    -A StringLiteral
+    -B End of Statement
+
+   10:   y = get(int);
+                    AB
+    -A Singular factor
+    -B End of Statement
+
+   11:   put("x = "); put(x); put("\n");
+             A      B      CD     E    F
+    -A StringLiteral
+    -B End of Statement
+    -C Singular factor
+    -D End of Statement
+    -E StringLiteral
+    -F End of Statement
+
+   12:   put("y = "); put(y); put("\n");
+             A      B      CD     E    F
+    -A StringLiteral
+    -B End of Statement
+    -C Singular factor
+    -D End of Statement
+    -E StringLiteral
+    -F End of Statement
+
+   13:   while (x != y) {
+                 A    B
+    -A Singular factor
+     | Boolean Operator
+    -B Singular factor
+
+   14:     if (x < y) {
+                AB  C
+    -A Singular factor
+    -B Boolean Operator
+    -C Singular factor
+
+   15:       y = y - x;
+                  AB  C
+    -A Singular factor
+    -B Additive Operator
+    -C Singular factor
+     | Compound rvalue
+     | End of Statement
+
+   16:     }
+           A
+    -A End of Block
+
+   17:     else {
+   18:       x = x - y;
+                  AB  C
+    -A Singular factor
+    -B Additive Operator
+    -C Singular factor
+     | Compound rvalue
+     | End of Statement
+
+   19:     };
+           AB
+    -A End of Block
+    -B End of Statement
+
+   20:   };
+         AB
+    -A End of Block
+    -B End of Statement
+
+   21:   put("gcd = "); put(x); put("\n");
+             A        B      CD     E    F
+    -A StringLiteral
+    -B End of Statement
+    -C Singular factor
+    -D End of Statement
+    -E StringLiteral
+    -F End of Statement
+
+   22:   if(x == 5) {
+             A    B
+    -A Singular factor
+     | Boolean Operator
+    -B Singular factor
+
+   23:     put("x = 5");
+               A       B
+    -A StringLiteral
+    -B End of Statement
+
+   24:   };
+         AB
+    -A End of Block
+    -B End of Statement
+
+   25: }
+       AB
+    -A End of Block
+    -B COMPILATION SUCSESSFUL
+

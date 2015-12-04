@@ -131,7 +131,9 @@ extern int yydebug;
     GREATEREQ_TOK = 280,
     LESSEQ_TOK = 281,
     EQUAL_TOK = 282,
-    NOTEQUAL_TOK = 283
+    NOTEQUAL_TOK = 283,
+    IF_TOK = 284,
+    ELSE_TOK = 285
   };
 #endif
 
@@ -148,7 +150,7 @@ union YYSTYPE
     struct InstrSeq *InstrSeq;
     int Operation;
 
-#line 152 "QGrammar.tab.c" /* yacc.c:355  */
+#line 154 "QGrammar.tab.c" /* yacc.c:355  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
@@ -163,7 +165,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 167 "QGrammar.tab.c" /* yacc.c:358  */
+#line 169 "QGrammar.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -405,21 +407,21 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  7
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   61
+#define YYLAST   74
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  29
+#define YYNTOKENS  31
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  18
+#define YYNNTS  19
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  36
+#define YYNRULES  39
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  66
+#define YYNSTATES  76
 
 /* YYTRANSLATE[YYX] -- Symbol number corresponding to YYX as returned
    by yylex, with out-of-bounds checking.  */
 #define YYUNDEFTOK  2
-#define YYMAXUTOK   283
+#define YYMAXUTOK   285
 
 #define YYTRANSLATE(YYX)                                                \
   ((unsigned int) (YYX) <= YYMAXUTOK ? yytranslate[YYX] : YYUNDEFTOK)
@@ -456,17 +458,17 @@ static const yytype_uint8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
       15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
-      25,    26,    27,    28
+      25,    26,    27,    28,    29,    30
 };
 
 #if YYDEBUG
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,    74,    74,    77,    86,    90,    94,    98,   101,   104,
-     107,   111,   114,   118,   121,   127,   132,   138,   142,   150,
-     154,   162,   167,   170,   182,   185,   188,   191,   195,   204,
-     207,   210,   213,   216,   219,   223,   268
+       0,    78,    78,    81,    90,    94,    98,   102,   105,   108,
+     111,   115,   118,   122,   125,   133,   140,   148,   171,   181,
+     196,   201,   207,   217,   223,   233,   238,   241,   254,   265,
+     269,   274,   279,   285,   290,   295,   300,   305,   310,   318
 };
 #endif
 
@@ -480,9 +482,10 @@ static const char *const yytname[] =
   "ASSIGN_TOK", "PLUS_TOK", "MINUS_TOK", "TIMES_TOK", "DIV_TOK",
   "INT_LIT_TOK", "GET_TOK", "PUT_TOK", "LPAREN_TOK", "RPAREN_TOK",
   "STR_LIT_TOK", "WHILE_TOK", "GREATER_TOK", "LESS_TOK", "GREATEREQ_TOK",
-  "LESSEQ_TOK", "EQUAL_TOK", "NOTEQUAL_TOK", "$accept", "prog", "decls",
-  "decl", "type", "idlist", "id", "body", "stmtseq", "statement", "rvalue",
-  "factor", "value", "add_op", "mul_op", "string", "bool_op", "block", YY_NULLPTR
+  "LESSEQ_TOK", "EQUAL_TOK", "NOTEQUAL_TOK", "IF_TOK", "ELSE_TOK",
+  "$accept", "prog", "decls", "decl", "type", "idlist", "id", "body",
+  "stmtseq", "statement", "block", "rvalue", "factor", "value", "string",
+  "add_op", "mul_op", "bool_op", "bvalue", YY_NULLPTR
 };
 #endif
 
@@ -493,14 +496,15 @@ static const yytype_uint16 yytoknum[] =
 {
        0,   256,   257,   258,   259,   260,   261,   262,   263,   264,
      265,   266,   267,   268,   269,   270,   271,   272,   273,   274,
-     275,   276,   277,   278,   279,   280,   281,   282,   283
+     275,   276,   277,   278,   279,   280,   281,   282,   283,   284,
+     285
 };
 # endif
 
-#define YYPACT_NINF -26
+#define YYPACT_NINF -32
 
 #define yypact_value_is_default(Yystate) \
-  (!!((Yystate) == (-26)))
+  (!!((Yystate) == (-32)))
 
 #define YYTABLE_NINF -1
 
@@ -511,13 +515,14 @@ static const yytype_uint16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-      37,   -26,   -26,     3,     4,    37,    19,   -26,     1,   -26,
-     -26,   -26,     6,   -26,    -1,   -26,    19,   -26,   -13,    13,
-      35,    38,    -1,   -26,     2,    10,    10,   -26,   -26,   -26,
-      29,   -26,   -26,    -5,    30,   -26,    31,    12,    18,    37,
-     -26,   -26,    39,    10,   -26,   -26,    10,    40,   -26,   -26,
-     -26,   -26,   -26,   -26,    10,   -26,    32,   -26,    30,   -26,
-     -26,    21,   -26,     1,    43,   -26
+       6,   -32,   -32,    30,    38,     6,    43,   -32,    39,   -32,
+     -32,   -32,     0,   -32,    -2,   -32,    43,   -32,    29,    33,
+      34,    44,    40,    -2,   -32,     2,    18,    18,    18,   -32,
+     -32,   -32,    35,   -32,   -32,    31,    -1,   -32,    36,    13,
+      37,    41,    -4,     6,   -32,   -32,    48,    18,   -32,   -32,
+      18,    49,   -32,   -32,   -32,   -32,   -32,   -32,    18,    39,
+      39,   -32,    42,   -32,    -1,   -32,   -32,    19,    50,    -8,
+     -32,   -32,   -32,    39,    53,   -32
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -527,25 +532,26 @@ static const yytype_uint8 yydefact[] =
 {
        4,     6,     7,     0,     0,     4,     0,     1,     0,     2,
        3,    10,     0,     9,    13,    11,     0,     5,     0,     0,
-       0,     0,    13,     8,     0,     0,     0,    36,    12,    22,
-       0,    28,    21,     0,    17,    19,     0,     0,     0,     0,
-      24,    25,     0,     0,    26,    27,     0,     0,    29,    31,
-      30,    32,    33,    34,     0,    14,     0,    16,    18,    20,
-      15,     0,    23,     0,     0,    35
+       0,     0,     0,    13,     8,     0,     0,     0,     0,    20,
+      12,    26,     0,    28,    25,     0,    21,    23,     0,     0,
+       0,     0,     0,     0,    29,    30,     0,     0,    31,    32,
+       0,     0,    33,    35,    34,    36,    37,    38,     0,     0,
+       0,    14,     0,    16,    22,    24,    15,    39,     0,     0,
+      27,    17,    18,     0,     0,    19
 };
 
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -26,   -26,    49,   -26,    16,   -26,    -2,   -26,    34,   -26,
-     -25,    14,    15,   -26,   -26,   -26,   -26,    -4
+     -32,   -32,    45,   -32,    21,   -32,     1,   -32,    46,   -32,
+     -31,   -25,    20,    15,   -32,   -32,   -32,   -32,    47
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-      -1,     3,     4,     5,     6,    12,    32,     9,    21,    22,
-      33,    34,    35,    43,    46,    36,    54,    15
+      -1,     3,     4,     5,     6,    12,    34,     9,    22,    23,
+      15,    39,    36,    37,    38,    47,    50,    58,    40
 };
 
   /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -553,55 +559,58 @@ static const yytype_int8 yydefgoto[] =
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_uint8 yytable[] =
 {
-      37,    38,    11,     7,    13,    11,    24,    40,    41,    14,
-      16,     8,    20,    11,    23,    42,    17,    18,    29,    30,
-      20,    19,    11,    31,    40,    41,    29,    30,    55,    61,
-      40,    41,    25,    40,    41,    48,    49,    50,    51,    52,
-      53,    63,     1,     2,    44,    45,    26,    27,    39,    57,
-      60,    47,    62,    65,    10,    56,    28,    58,     0,    64,
-       0,    59
+      35,    11,    72,    42,    16,    11,    61,    13,    44,    45,
+      17,     1,     2,    48,    49,    21,    18,    24,    31,    32,
+      19,    11,    73,    33,    21,    44,    45,    20,    68,    69,
+       7,    44,    45,    67,    31,    32,    52,    53,    54,    55,
+      56,    57,    74,    44,    45,     8,    11,    14,    25,    29,
+      10,    46,    26,    27,    43,    28,    51,    59,    63,    66,
+      71,    60,    70,    75,    62,    65,     0,    64,     0,    30,
+       0,     0,     0,     0,    41
 };
 
 static const yytype_int8 yycheck[] =
 {
-      25,    26,     3,     0,     6,     3,    19,    12,    13,     8,
-       4,     7,    14,     3,    16,    20,    10,    18,    16,    17,
-      22,    22,     3,    21,    12,    13,    16,    17,    10,    54,
-      12,    13,    19,    12,    13,    23,    24,    25,    26,    27,
-      28,    20,     5,     6,    14,    15,    11,     9,    19,    10,
-      10,    20,    20,    10,     5,    39,    22,    43,    -1,    63,
-      -1,    46
+      25,     3,    10,    28,     4,     3,    10,     6,    12,    13,
+      10,     5,     6,    14,    15,    14,    18,    16,    16,    17,
+      22,     3,    30,    21,    23,    12,    13,    29,    59,    60,
+       0,    12,    13,    58,    16,    17,    23,    24,    25,    26,
+      27,    28,    73,    12,    13,     7,     3,     8,    19,     9,
+       5,    20,    19,    19,    19,    11,    20,    20,    10,    10,
+      10,    20,    20,    10,    43,    50,    -1,    47,    -1,    23,
+      -1,    -1,    -1,    -1,    27
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
      symbol of state STATE-NUM.  */
 static const yytype_uint8 yystos[] =
 {
-       0,     5,     6,    30,    31,    32,    33,     0,     7,    36,
-      31,     3,    34,    35,     8,    46,     4,    10,    18,    22,
-      35,    37,    38,    35,    19,    19,    11,     9,    37,    16,
-      17,    21,    35,    39,    40,    41,    44,    39,    39,    19,
-      12,    13,    20,    42,    14,    15,    43,    20,    23,    24,
-      25,    26,    27,    28,    45,    10,    33,    10,    40,    41,
-      10,    39,    20,    20,    46,    10
+       0,     5,     6,    32,    33,    34,    35,     0,     7,    38,
+      33,     3,    36,    37,     8,    41,     4,    10,    18,    22,
+      29,    37,    39,    40,    37,    19,    19,    19,    11,     9,
+      39,    16,    17,    21,    37,    42,    43,    44,    45,    42,
+      49,    49,    42,    19,    12,    13,    20,    46,    14,    15,
+      47,    20,    23,    24,    25,    26,    27,    28,    48,    20,
+      20,    10,    35,    10,    43,    44,    10,    42,    41,    41,
+      20,    10,    10,    30,    41,    10
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_uint8 yyr1[] =
 {
-       0,    29,    30,    31,    31,    32,    33,    33,    34,    34,
-      35,    36,    37,    37,    38,    38,    38,    39,    39,    40,
-      40,    41,    41,    41,    42,    42,    43,    43,    44,    45,
-      45,    45,    45,    45,    45,    38,    46
+       0,    31,    32,    33,    33,    34,    35,    35,    36,    36,
+      37,    38,    39,    39,    40,    40,    40,    40,    40,    40,
+      41,    42,    42,    43,    43,    44,    44,    44,    45,    46,
+      46,    47,    47,    48,    48,    48,    48,    48,    48,    49
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
 static const yytype_uint8 yyr2[] =
 {
        0,     2,     2,     2,     0,     3,     1,     1,     3,     1,
-       1,     2,     2,     0,     4,     5,     5,     1,     3,     1,
-       3,     1,     1,     4,     1,     1,     1,     1,     1,     1,
-       1,     1,     1,     1,     1,     8,     3
+       1,     2,     2,     0,     4,     5,     5,     6,     6,     8,
+       3,     1,     3,     1,     3,     1,     1,     4,     1,     1,
+       1,     1,     1,     1,     1,     1,     1,     1,     1,     3
 };
 
 
@@ -1278,15 +1287,15 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 74 "yacc/QGrammar.y" /* yacc.c:1646  */
+#line 78 "yacc/QGrammar.y" /* yacc.c:1646  */
     {
     Finish((yyvsp[-1].InstrSeq), (yyvsp[0].InstrSeq));
 }
-#line 1286 "QGrammar.tab.c" /* yacc.c:1646  */
+#line 1295 "QGrammar.tab.c" /* yacc.c:1646  */
     break;
 
   case 3:
-#line 77 "yacc/QGrammar.y" /* yacc.c:1646  */
+#line 81 "yacc/QGrammar.y" /* yacc.c:1646  */
     {
     (yyval.InstrSeq) = (yyvsp[-1].InstrSeq);
     struct InstrSeq *tail = (yyval.InstrSeq);
@@ -1296,137 +1305,216 @@ yyreduce:
     tail->Next = (yyvsp[0].InstrSeq);
     //PostMessage(GetCurrentColumn(), "Found decls!");
 }
-#line 1300 "QGrammar.tab.c" /* yacc.c:1646  */
+#line 1309 "QGrammar.tab.c" /* yacc.c:1646  */
     break;
 
   case 4:
-#line 86 "yacc/QGrammar.y" /* yacc.c:1646  */
+#line 90 "yacc/QGrammar.y" /* yacc.c:1646  */
     {
     (yyval.InstrSeq) = NULL;
     //PostMessage(GetCurrentColumn(), "Found empty decls!");
 }
-#line 1309 "QGrammar.tab.c" /* yacc.c:1646  */
+#line 1318 "QGrammar.tab.c" /* yacc.c:1646  */
     break;
 
   case 5:
-#line 90 "yacc/QGrammar.y" /* yacc.c:1646  */
+#line 94 "yacc/QGrammar.y" /* yacc.c:1646  */
     {
     //PostMessage(GetCurrentColumn(), "Found Declaration!");
     (yyval.InstrSeq) = ProcDecl((yyvsp[-1].IdList),(yyvsp[-2].TypeDesc));
 }
-#line 1318 "QGrammar.tab.c" /* yacc.c:1646  */
+#line 1327 "QGrammar.tab.c" /* yacc.c:1646  */
     break;
 
   case 6:
-#line 94 "yacc/QGrammar.y" /* yacc.c:1646  */
+#line 98 "yacc/QGrammar.y" /* yacc.c:1646  */
     {
     //PostMessage(GetCurrentColumn(), "Found Integer Type!");
     (yyval.TypeDesc) = ProcTypeDesc(IntBaseType);
 }
-#line 1327 "QGrammar.tab.c" /* yacc.c:1646  */
+#line 1336 "QGrammar.tab.c" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 98 "yacc/QGrammar.y" /* yacc.c:1646  */
+#line 102 "yacc/QGrammar.y" /* yacc.c:1646  */
     {
     (yyval.TypeDesc) = ProcTypeDesc(ChrBaseType);
 }
-#line 1335 "QGrammar.tab.c" /* yacc.c:1646  */
+#line 1344 "QGrammar.tab.c" /* yacc.c:1646  */
     break;
 
   case 8:
-#line 101 "yacc/QGrammar.y" /* yacc.c:1646  */
+#line 105 "yacc/QGrammar.y" /* yacc.c:1646  */
     {
     (yyval.IdList) = ChainIdentifier((yyvsp[-2].IdList),(yyvsp[0].Text));
 }
-#line 1343 "QGrammar.tab.c" /* yacc.c:1646  */
+#line 1352 "QGrammar.tab.c" /* yacc.c:1646  */
     break;
 
   case 9:
-#line 104 "yacc/QGrammar.y" /* yacc.c:1646  */
+#line 108 "yacc/QGrammar.y" /* yacc.c:1646  */
     {
     (yyval.IdList) = ProduceIdentifier((yyvsp[0].Text));
-}
-#line 1351 "QGrammar.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 10:
-#line 107 "yacc/QGrammar.y" /* yacc.c:1646  */
-    {
-    //PostMessage(GetCurrentColumn(), "Found Identifier!");
-    (yyval.Text) = strdup(yytext);
 }
 #line 1360 "QGrammar.tab.c" /* yacc.c:1646  */
     break;
 
-  case 11:
+  case 10:
 #line 111 "yacc/QGrammar.y" /* yacc.c:1646  */
     {
-    (yyval.InstrSeq) = (yyvsp[0].InstrSeq);
+    //PostMessage(GetCurrentColumn(), "Found Identifier!");
+    (yyval.Text) = strdup(yytext);
 }
-#line 1368 "QGrammar.tab.c" /* yacc.c:1646  */
+#line 1369 "QGrammar.tab.c" /* yacc.c:1646  */
     break;
 
-  case 12:
-#line 114 "yacc/QGrammar.y" /* yacc.c:1646  */
+  case 11:
+#line 115 "yacc/QGrammar.y" /* yacc.c:1646  */
     {
-    AppendSeq((yyvsp[-1].InstrSeq), (yyvsp[0].InstrSeq));
-    (yyval.InstrSeq) = (yyvsp[-1].InstrSeq);
+    (yyval.InstrSeq) = (yyvsp[0].InstrSeq);
 }
 #line 1377 "QGrammar.tab.c" /* yacc.c:1646  */
     break;
 
-  case 13:
+  case 12:
 #line 118 "yacc/QGrammar.y" /* yacc.c:1646  */
+    {
+    AppendSeq((yyvsp[-1].InstrSeq), (yyvsp[0].InstrSeq));
+    (yyval.InstrSeq) = (yyvsp[-1].InstrSeq);
+}
+#line 1386 "QGrammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 13:
+#line 122 "yacc/QGrammar.y" /* yacc.c:1646  */
     {
     //PostMessage(GetCurrentColumn(), "Found Statement Sequence!");
 }
-#line 1385 "QGrammar.tab.c" /* yacc.c:1646  */
+#line 1394 "QGrammar.tab.c" /* yacc.c:1646  */
     break;
 
   case 14:
-#line 121 "yacc/QGrammar.y" /* yacc.c:1646  */
+#line 125 "yacc/QGrammar.y" /* yacc.c:1646  */
     {
     (yyval.InstrSeq) = (yyvsp[-1].InstrSeq);
     char *label = strdup("_");
     strcat(label, (yyvsp[-3].Text));
     AppendSeq((yyval.InstrSeq), GenInstr(NULL, "sw", "$t1", label, NULL));
+    
+    PostMessage(GetCurrentColumn(), "End of Statement");
 }
-#line 1396 "QGrammar.tab.c" /* yacc.c:1646  */
+#line 1407 "QGrammar.tab.c" /* yacc.c:1646  */
     break;
 
   case 15:
-#line 127 "yacc/QGrammar.y" /* yacc.c:1646  */
+#line 133 "yacc/QGrammar.y" /* yacc.c:1646  */
     {
     (yyval.InstrSeq) = GenInstr(NULL, "li", "$v0", "4", NULL);
     AppendSeq((yyval.InstrSeq), GenInstr(NULL, "la", "$a0", (yyvsp[-2].Text), NULL));
     AppendSeq((yyval.InstrSeq), GenInstr(NULL, "syscall", NULL, NULL, NULL));
+    
+    PostMessage(GetCurrentColumn(), "End of Statement");
 }
-#line 1406 "QGrammar.tab.c" /* yacc.c:1646  */
+#line 1419 "QGrammar.tab.c" /* yacc.c:1646  */
     break;
 
   case 16:
-#line 132 "yacc/QGrammar.y" /* yacc.c:1646  */
+#line 140 "yacc/QGrammar.y" /* yacc.c:1646  */
     {
     (yyval.InstrSeq) = (yyvsp[-2].InstrSeq);
     AppendSeq((yyval.InstrSeq), GenInstr(NULL, "addi", "$a0", "$t1", "0"));
     AppendSeq((yyval.InstrSeq), GenInstr(NULL, "li", "$v0", "1", NULL));
     AppendSeq((yyval.InstrSeq), GenInstr(NULL, "syscall", NULL, NULL, NULL));
+    
+    PostMessage(GetCurrentColumn(), "End of Statement");
 }
-#line 1417 "QGrammar.tab.c" /* yacc.c:1646  */
+#line 1432 "QGrammar.tab.c" /* yacc.c:1646  */
     break;
 
   case 17:
-#line 138 "yacc/QGrammar.y" /* yacc.c:1646  */
+#line 148 "yacc/QGrammar.y" /* yacc.c:1646  */
     {
-    (yyval.InstrSeq) = (yyvsp[0].InstrSeq);
-    AppendSeq((yyval.InstrSeq), GenInstr(NULL, "addi", "$t1", "$t2", "0"));
+    char *top = GenLabel();
+    char *bottom = GenLabel();
+    
+    // Top of loop
+    (yyval.InstrSeq) = GenInstr(top, NULL, NULL, NULL, NULL);
+    
+    AppendSeq((yyval.InstrSeq), (yyvsp[-3].InstrSeq));
+    AppendSeq((yyval.InstrSeq), GenInstr(NULL, "beq", "$t4", "$zero", bottom));
+    
+    
+    
+    
+    
+    // Perform Loop
+    AppendSeq((yyval.InstrSeq), (yyvsp[-1].InstrSeq));
+    // Go back to top
+    AppendSeq((yyval.InstrSeq), GenInstr(NULL, "b", top, NULL, NULL));
+    // End of loop
+    AppendSeq((yyval.InstrSeq), GenInstr(bottom, NULL, NULL, NULL, NULL));
+    
+    PostMessage(GetCurrentColumn(), "End of Statement");
 }
-#line 1426 "QGrammar.tab.c" /* yacc.c:1646  */
+#line 1460 "QGrammar.tab.c" /* yacc.c:1646  */
     break;
 
   case 18:
-#line 142 "yacc/QGrammar.y" /* yacc.c:1646  */
+#line 171 "yacc/QGrammar.y" /* yacc.c:1646  */
+    {
+    char *endlabel = GenLabel();
+    
+    (yyval.InstrSeq) = (yyvsp[-3].InstrSeq);
+    AppendSeq((yyval.InstrSeq), GenInstr(NULL, "beq", "$t4", "$zero", endlabel));
+    AppendSeq((yyval.InstrSeq), (yyvsp[-1].InstrSeq));
+    AppendSeq((yyval.InstrSeq), GenInstr(endlabel, NULL, NULL, NULL, NULL));
+    
+    PostMessage(GetCurrentColumn(), "End of Statement");
+}
+#line 1475 "QGrammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 19:
+#line 181 "yacc/QGrammar.y" /* yacc.c:1646  */
+    {
+    char *elselabel = GenLabel();
+    char *endlabel = GenLabel();
+    
+    (yyval.InstrSeq) = (yyvsp[-5].InstrSeq);
+    AppendSeq((yyval.InstrSeq), GenInstr(NULL, "beq", "$t4", "$zero", elselabel));
+    AppendSeq((yyval.InstrSeq), (yyvsp[-3].InstrSeq));
+    AppendSeq((yyval.InstrSeq), GenInstr(NULL, "b", endlabel, NULL, NULL));
+    AppendSeq((yyval.InstrSeq), GenInstr(elselabel, NULL, NULL, NULL, NULL));
+    AppendSeq((yyval.InstrSeq), (yyvsp[-1].InstrSeq));
+    AppendSeq((yyval.InstrSeq), GenInstr(endlabel, NULL, NULL, NULL, NULL));
+    
+    PostMessage(GetCurrentColumn(), "End of Statement");
+}
+#line 1494 "QGrammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 20:
+#line 196 "yacc/QGrammar.y" /* yacc.c:1646  */
+    {
+    (yyval.InstrSeq) = (yyvsp[-1].InstrSeq);
+    PostMessage(GetCurrentColumn(), "End of Block");
+}
+#line 1503 "QGrammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 21:
+#line 201 "yacc/QGrammar.y" /* yacc.c:1646  */
+    {
+    (yyval.InstrSeq) = (yyvsp[0].InstrSeq);
+    AppendSeq((yyval.InstrSeq), GenInstr(NULL, "addi", "$t1", "$t2", "0"));
+    
+    //PostMessage(GetCurrentColumn(), "Singular rvalue");
+}
+#line 1514 "QGrammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 22:
+#line 207 "yacc/QGrammar.y" /* yacc.c:1646  */
     {
     (yyval.InstrSeq) = (yyvsp[-2].InstrSeq);
     AppendSeq((yyval.InstrSeq), (yyvsp[0].InstrSeq));
@@ -1434,21 +1522,25 @@ yyreduce:
         AppendSeq((yyval.InstrSeq), GenInstr(NULL, "add", "$t1", "$t1", "$t2"));
     if((yyvsp[-1].Operation) == MINUS_TOK)
         AppendSeq((yyval.InstrSeq), GenInstr(NULL, "sub", "$t1", "$t1", "$t2"));
+        
+    PostMessage(GetCurrentColumn(), "Compound rvalue");
 }
-#line 1439 "QGrammar.tab.c" /* yacc.c:1646  */
+#line 1529 "QGrammar.tab.c" /* yacc.c:1646  */
     break;
 
-  case 19:
-#line 150 "yacc/QGrammar.y" /* yacc.c:1646  */
+  case 23:
+#line 217 "yacc/QGrammar.y" /* yacc.c:1646  */
     {
     (yyval.InstrSeq) = (yyvsp[0].InstrSeq);
     AppendSeq((yyval.InstrSeq), GenInstr(NULL, "addi", "$t2", "$t3", "0"));
+    
+    PostMessage(GetCurrentColumn(), "Singular factor");
 }
-#line 1448 "QGrammar.tab.c" /* yacc.c:1646  */
+#line 1540 "QGrammar.tab.c" /* yacc.c:1646  */
     break;
 
-  case 20:
-#line 154 "yacc/QGrammar.y" /* yacc.c:1646  */
+  case 24:
+#line 223 "yacc/QGrammar.y" /* yacc.c:1646  */
     {
     (yyval.InstrSeq) = (yyvsp[-2].InstrSeq);
     AppendSeq((yyval.InstrSeq), (yyvsp[0].InstrSeq));
@@ -1456,30 +1548,32 @@ yyreduce:
         AppendSeq((yyval.InstrSeq), GenInstr(NULL, "mul", "$t2", "$t2", "$t3"));
     if((yyvsp[-1].Operation) == DIV_TOK)
         AppendSeq((yyval.InstrSeq), GenInstr(NULL, "div", "$t2", "$t2", "$t3"));
+        
+    PostMessage(GetCurrentColumn(), "Compound factor");
 }
-#line 1461 "QGrammar.tab.c" /* yacc.c:1646  */
+#line 1555 "QGrammar.tab.c" /* yacc.c:1646  */
     break;
 
-  case 21:
-#line 162 "yacc/QGrammar.y" /* yacc.c:1646  */
+  case 25:
+#line 233 "yacc/QGrammar.y" /* yacc.c:1646  */
     {
     char *label = strdup("_");
     strcat(label, (yyvsp[0].Text));
     (yyval.InstrSeq) = GenInstr(NULL, "lw", "$t3", label, NULL);
 }
-#line 1471 "QGrammar.tab.c" /* yacc.c:1646  */
+#line 1565 "QGrammar.tab.c" /* yacc.c:1646  */
     break;
 
-  case 22:
-#line 167 "yacc/QGrammar.y" /* yacc.c:1646  */
+  case 26:
+#line 238 "yacc/QGrammar.y" /* yacc.c:1646  */
     {
     (yyval.InstrSeq) = GenInstr(NULL, "li", "$t3", yytext, NULL);
 }
-#line 1479 "QGrammar.tab.c" /* yacc.c:1646  */
+#line 1573 "QGrammar.tab.c" /* yacc.c:1646  */
     break;
 
-  case 23:
-#line 170 "yacc/QGrammar.y" /* yacc.c:1646  */
+  case 27:
+#line 241 "yacc/QGrammar.y" /* yacc.c:1646  */
     {
     if((yyvsp[-1].TypeDesc)->BaseType == IntBaseType) {
         (yyval.InstrSeq) = GenInstr(NULL, "li", "$v0", "5", NULL);
@@ -1492,43 +1586,11 @@ yyreduce:
         AppendSeq((yyval.InstrSeq), GenInstr(NULL, "addi", "$t3", "$v0", "0"));
     }
 }
-#line 1496 "QGrammar.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 24:
-#line 182 "yacc/QGrammar.y" /* yacc.c:1646  */
-    {
-    (yyval.Operation) = PLUS_TOK;
-}
-#line 1504 "QGrammar.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 25:
-#line 185 "yacc/QGrammar.y" /* yacc.c:1646  */
-    {
-    (yyval.Operation) = MINUS_TOK;
-}
-#line 1512 "QGrammar.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 26:
-#line 188 "yacc/QGrammar.y" /* yacc.c:1646  */
-    {
-    (yyval.Operation) = TIMES_TOK;
-}
-#line 1520 "QGrammar.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 27:
-#line 191 "yacc/QGrammar.y" /* yacc.c:1646  */
-    {
-    (yyval.Operation) = DIV_TOK;
-}
-#line 1528 "QGrammar.tab.c" /* yacc.c:1646  */
+#line 1590 "QGrammar.tab.c" /* yacc.c:1646  */
     break;
 
   case 28:
-#line 195 "yacc/QGrammar.y" /* yacc.c:1646  */
+#line 254 "yacc/QGrammar.y" /* yacc.c:1646  */
     {
     StringLiteral(yytext);
     
@@ -1536,117 +1598,146 @@ yyreduce:
     sprintf(label, "_STR_%d", StringNum);
     
     (yyval.Text) = label;
+    
+    PostMessage(GetCurrentColumn()-strlen(yytext)+1, "StringLiteral");
 }
-#line 1541 "QGrammar.tab.c" /* yacc.c:1646  */
+#line 1605 "QGrammar.tab.c" /* yacc.c:1646  */
     break;
 
   case 29:
-#line 204 "yacc/QGrammar.y" /* yacc.c:1646  */
+#line 265 "yacc/QGrammar.y" /* yacc.c:1646  */
     {
-    (yyval.Operation) = GREATER_TOK;
+    (yyval.Operation) = PLUS_TOK;
+    PostMessage(GetCurrentColumn(), "Additive Operator");
 }
-#line 1549 "QGrammar.tab.c" /* yacc.c:1646  */
+#line 1614 "QGrammar.tab.c" /* yacc.c:1646  */
     break;
 
   case 30:
-#line 207 "yacc/QGrammar.y" /* yacc.c:1646  */
+#line 269 "yacc/QGrammar.y" /* yacc.c:1646  */
     {
-    (yyval.Operation) = GREATEREQ_TOK;
+    (yyval.Operation) = MINUS_TOK;
+    
+    PostMessage(GetCurrentColumn(), "Additive Operator");
 }
-#line 1557 "QGrammar.tab.c" /* yacc.c:1646  */
+#line 1624 "QGrammar.tab.c" /* yacc.c:1646  */
     break;
 
   case 31:
-#line 210 "yacc/QGrammar.y" /* yacc.c:1646  */
+#line 274 "yacc/QGrammar.y" /* yacc.c:1646  */
     {
-    (yyval.Operation) = LESS_TOK;
+    (yyval.Operation) = TIMES_TOK;
+    
+    PostMessage(GetCurrentColumn()-1, "Multiplicitive Operator");
 }
-#line 1565 "QGrammar.tab.c" /* yacc.c:1646  */
+#line 1634 "QGrammar.tab.c" /* yacc.c:1646  */
     break;
 
   case 32:
-#line 213 "yacc/QGrammar.y" /* yacc.c:1646  */
+#line 279 "yacc/QGrammar.y" /* yacc.c:1646  */
     {
-    (yyval.Operation) = LESSEQ_TOK;
+    (yyval.Operation) = DIV_TOK;
+    
+    PostMessage(GetCurrentColumn()-1, "Multiplicitive Operator");
 }
-#line 1573 "QGrammar.tab.c" /* yacc.c:1646  */
+#line 1644 "QGrammar.tab.c" /* yacc.c:1646  */
     break;
 
   case 33:
-#line 216 "yacc/QGrammar.y" /* yacc.c:1646  */
+#line 285 "yacc/QGrammar.y" /* yacc.c:1646  */
     {
-    (yyval.Operation) = EQUAL_TOK;
+    (yyval.Operation) = GREATER_TOK;
+    
+    PostMessage(GetCurrentColumn()-1, "Boolean Operator");
 }
-#line 1581 "QGrammar.tab.c" /* yacc.c:1646  */
+#line 1654 "QGrammar.tab.c" /* yacc.c:1646  */
     break;
 
   case 34:
-#line 219 "yacc/QGrammar.y" /* yacc.c:1646  */
+#line 290 "yacc/QGrammar.y" /* yacc.c:1646  */
     {
-    (yyval.Operation) = NOTEQUAL_TOK;
+    (yyval.Operation) = GREATEREQ_TOK;
+    
+    PostMessage(GetCurrentColumn()-2, "Boolean Operator");
 }
-#line 1589 "QGrammar.tab.c" /* yacc.c:1646  */
+#line 1664 "QGrammar.tab.c" /* yacc.c:1646  */
     break;
 
   case 35:
-#line 223 "yacc/QGrammar.y" /* yacc.c:1646  */
+#line 295 "yacc/QGrammar.y" /* yacc.c:1646  */
     {
-    char *top = GenLabel();
-    char *bottom = GenLabel();
+    (yyval.Operation) = LESS_TOK;
     
-    // Top of loop
-    (yyval.InstrSeq) = GenInstr(top, NULL, NULL, NULL, NULL);
-    
-    // Evaluate Conditional
-    AppendSeq((yyval.InstrSeq), (yyvsp[-5].InstrSeq));
-    AppendSeq((yyval.InstrSeq), GenInstr(NULL, "addi", "$t4", "$t1", "0"));
-    AppendSeq((yyval.InstrSeq), (yyvsp[-3].InstrSeq));
-    AppendSeq((yyval.InstrSeq), GenInstr(NULL, "sub", "$t4", "$t4", "$t1"));
-    
-    // Branch condition  x - y is in $t4
-    switch((yyvsp[-4].Operation)) {
-        case GREATER_TOK:
-            AppendSeq((yyval.InstrSeq), GenInstr(NULL, "blez", "$t4", bottom, NULL));
-            break;
-        case GREATEREQ_TOK:
-            AppendSeq((yyval.InstrSeq), GenInstr(NULL, "bltz", "$t4", bottom, NULL));
-            break;
-        case LESS_TOK:
-            AppendSeq((yyval.InstrSeq), GenInstr(NULL, "bgez", "$t4", bottom, NULL));
-            break;
-        case LESSEQ_TOK:
-            AppendSeq((yyval.InstrSeq), GenInstr(NULL, "bgtz", "$t4", bottom, NULL));
-            break;
-        case EQUAL_TOK:
-            AppendSeq((yyval.InstrSeq), GenInstr(NULL, "beq", "$t4", "$zero", bottom));
-            break;
-        case NOTEQUAL_TOK:
-            AppendSeq((yyval.InstrSeq), GenInstr(NULL, "bne", "$t4", "$zero", bottom));
-            break;
-    }
-    
-    
-    
-    // Perform Loop
-    AppendSeq((yyval.InstrSeq), (yyvsp[-1].InstrSeq));
-    // Go back to top
-    AppendSeq((yyval.InstrSeq), GenInstr(NULL, "b", top, NULL, NULL));
-    // End of loop
-    AppendSeq((yyval.InstrSeq), GenInstr(bottom, NULL, NULL, NULL, NULL));
+    PostMessage(GetCurrentColumn()-1, "Boolean Operator");
 }
-#line 1638 "QGrammar.tab.c" /* yacc.c:1646  */
+#line 1674 "QGrammar.tab.c" /* yacc.c:1646  */
     break;
 
   case 36:
-#line 268 "yacc/QGrammar.y" /* yacc.c:1646  */
+#line 300 "yacc/QGrammar.y" /* yacc.c:1646  */
     {
-    (yyval.InstrSeq) = (yyvsp[-1].InstrSeq);
+    (yyval.Operation) = LESSEQ_TOK;
+    
+    PostMessage(GetCurrentColumn()-2, "Boolean Operator");
 }
-#line 1646 "QGrammar.tab.c" /* yacc.c:1646  */
+#line 1684 "QGrammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 37:
+#line 305 "yacc/QGrammar.y" /* yacc.c:1646  */
+    {
+    (yyval.Operation) = EQUAL_TOK;
+    
+    PostMessage(GetCurrentColumn()-2, "Boolean Operator");
+}
+#line 1694 "QGrammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 38:
+#line 310 "yacc/QGrammar.y" /* yacc.c:1646  */
+    {
+    (yyval.Operation) = NOTEQUAL_TOK;
+    
+    PostMessage(GetCurrentColumn()-2, "Boolean Operator");
+}
+#line 1704 "QGrammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 39:
+#line 318 "yacc/QGrammar.y" /* yacc.c:1646  */
+    {
+    // Evaluate Conditional
+    (yyval.InstrSeq) = (yyvsp[-2].InstrSeq);
+    AppendSeq((yyval.InstrSeq), GenInstr(NULL, "addi", "$t4", "$t1", "0"));
+    AppendSeq((yyval.InstrSeq), (yyvsp[0].InstrSeq));
+    
+    // Branch condition  x - y is in $t4
+    switch((yyvsp[-1].Operation)) {
+        case GREATER_TOK:
+            AppendSeq((yyval.InstrSeq), GenInstr(NULL, "sgt", "$t4", "$t4", "$t1"));
+            break;
+        case GREATEREQ_TOK:
+            AppendSeq((yyval.InstrSeq), GenInstr(NULL, "sge", "$t4", "$t4", "$t1"));
+            break;
+        case LESS_TOK:
+            AppendSeq((yyval.InstrSeq), GenInstr(NULL, "slt", "$t4", "$t4", "$t1"));
+            break;
+        case LESSEQ_TOK:
+            AppendSeq((yyval.InstrSeq), GenInstr(NULL, "sle", "$t4", "$t4", "$t1"));
+            break;
+        case EQUAL_TOK:
+            AppendSeq((yyval.InstrSeq), GenInstr(NULL, "seq", "$t4", "$t4", "$t1"));
+            break;
+        case NOTEQUAL_TOK:
+            AppendSeq((yyval.InstrSeq), GenInstr(NULL, "sne", "$t4", "$t4", "$t1"));
+            break;
+    }
+}
+#line 1737 "QGrammar.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1650 "QGrammar.tab.c" /* yacc.c:1646  */
+#line 1741 "QGrammar.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1874,7 +1965,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 272 "yacc/QGrammar.y" /* yacc.c:1906  */
+#line 347 "yacc/QGrammar.y" /* yacc.c:1906  */
 
 
 void yyerror(char *s) {

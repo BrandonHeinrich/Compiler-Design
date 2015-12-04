@@ -2,16 +2,69 @@
     2: main
     3: {
     4:   x = 5 + 2 / 3;
+              AB  CD  E
+    -A Singular factor
+    -B Additive Operator
+    -C Singular factor
+    -D Multiplicitive Operator
+    -E Compound factor
+     | Compound rvalue
+     | End of Statement
+
     5:   y = x * x - 4;
+              AB  CD  E
+    -A Singular factor
+    -B Multiplicitive Operator
+    -C Compound factor
+    -D Additive Operator
+    -E Singular factor
+     | Compound rvalue
+     | End of Statement
+
     6:   put("> ");
+             A    B
+    -A StringLiteral
+    -B End of Statement
+
     7:   z = get(int);
+                    AB
+    -A Singular factor
+    -B End of Statement
+
     8:   put("x = ");
+             A      B
+    -A StringLiteral
+    -B End of Statement
+
     9:   put(x);
+              AB
+    -A Singular factor
+    -B End of Statement
+
    10:   put("\n");
+             A    B
+    -A StringLiteral
+    -B End of Statement
+
    11:   put("y * z = ");
+             A          B
+    -A StringLiteral
+    -B End of Statement
+
    12:   put(y*z);
+              A BC
+    -A Singular factor
+     | Multiplicitive Operator
+    -B Compound factor
+    -C End of Statement
+
    13:   put("\n");
+             A    B
+    -A StringLiteral
+    -B End of Statement
+
    14: }
-        A
-    -A COMPILATION SUCSESSFUL
+       AB
+    -A End of Block
+    -B COMPILATION SUCSESSFUL
 

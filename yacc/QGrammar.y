@@ -36,9 +36,11 @@ void yyerror(char *s);
 %type <InstrSeq> rvalue
 %type <InstrSeq> factor
 %type <InstrSeq> value
+%type <InstrSeq> bvalue
 %type <Operation> add_op
 %type <Operation> mul_op
 %type <Operation> bool_op
+
 
 /* List of tokens*/
 %token IDENT_TOK
@@ -68,6 +70,8 @@ void yyerror(char *s);
 %token LESSEQ_TOK
 %token EQUAL_TOK
 %token NOTEQUAL_TOK
+%token IF_TOK
+%token ELSE_TOK
 
 %%
 
@@ -123,21 +127,82 @@ statement: id ASSIGN_TOK rvalue SEMI_TOK {
     char *label = strdup("_");
     strcat(label, $1);
     AppendSeq($$, GenInstr(NULL, "sw", "$t1", label, NULL));
+    
+    PostMessage(GetCurrentColumn(), "End of Statement");
 };
 statement: PUT_TOK LPAREN_TOK string RPAREN_TOK SEMI_TOK {
     $$ = GenInstr(NULL, "li", "$v0", "4", NULL);
     AppendSeq($$, GenInstr(NULL, "la", "$a0", $3, NULL));
     AppendSeq($$, GenInstr(NULL, "syscall", NULL, NULL, NULL));
+    
+    PostMessage(GetCurrentColumn(), "End of Statement");
 };
 statement: PUT_TOK LPAREN_TOK rvalue RPAREN_TOK SEMI_TOK {
     $$ = $3;
     AppendSeq($$, GenInstr(NULL, "addi", "$a0", "$t1", "0"));
     AppendSeq($$, GenInstr(NULL, "li", "$v0", "1", NULL));
     AppendSeq($$, GenInstr(NULL, "syscall", NULL, NULL, NULL));
+    
+    PostMessage(GetCurrentColumn(), "End of Statement");
 };
+statement: WHILE_TOK LPAREN_TOK bvalue RPAREN_TOK block SEMI_TOK {
+    char *top = GenLabel();
+    char *bottom = GenLabel();
+    
+    // Top of loop
+    $$ = GenInstr(top, NULL, NULL, NULL, NULL);
+    
+    AppendSeq($$, $3);
+    AppendSeq($$, GenInstr(NULL, "beq", "$t4", "$zero", bottom));
+    
+    
+    
+    
+    
+    // Perform Loop
+    AppendSeq($$, $5);
+    // Go back to top
+    AppendSeq($$, GenInstr(NULL, "b", top, NULL, NULL));
+    // End of loop
+    AppendSeq($$, GenInstr(bottom, NULL, NULL, NULL, NULL));
+    
+    PostMessage(GetCurrentColumn(), "End of Statement");
+}
+statement: IF_TOK LPAREN_TOK bvalue RPAREN_TOK block SEMI_TOK {
+    char *endlabel = GenLabel();
+    
+    $$ = $3;
+    AppendSeq($$, GenInstr(NULL, "beq", "$t4", "$zero", endlabel));
+    AppendSeq($$, $5);
+    AppendSeq($$, GenInstr(endlabel, NULL, NULL, NULL, NULL));
+    
+    PostMessage(GetCurrentColumn(), "End of Statement");
+}
+statement: IF_TOK LPAREN_TOK bvalue RPAREN_TOK block ELSE_TOK block SEMI_TOK {
+    char *elselabel = GenLabel();
+    char *endlabel = GenLabel();
+    
+    $$ = $3;
+    AppendSeq($$, GenInstr(NULL, "beq", "$t4", "$zero", elselabel));
+    AppendSeq($$, $5);
+    AppendSeq($$, GenInstr(NULL, "b", endlabel, NULL, NULL));
+    AppendSeq($$, GenInstr(elselabel, NULL, NULL, NULL, NULL));
+    AppendSeq($$, $7);
+    AppendSeq($$, GenInstr(endlabel, NULL, NULL, NULL, NULL));
+    
+    PostMessage(GetCurrentColumn(), "End of Statement");
+}
+
+block: LBRACE_TOK stmtseq RBRACE_TOK {
+    $$ = $2;
+    PostMessage(GetCurrentColumn(), "End of Block");
+}
+
 rvalue: factor {
     $$ = $1;
     AppendSeq($$, GenInstr(NULL, "addi", "$t1", "$t2", "0"));
+    
+    //PostMessage(GetCurrentColumn(), "Singular rvalue");
 };
 rvalue: rvalue add_op factor {
     $$ = $1;
@@ -146,10 +211,14 @@ rvalue: rvalue add_op factor {
         AppendSeq($$, GenInstr(NULL, "add", "$t1", "$t1", "$t2"));
     if($2 == MINUS_TOK)
         AppendSeq($$, GenInstr(NULL, "sub", "$t1", "$t1", "$t2"));
+        
+    PostMessage(GetCurrentColumn(), "Compound rvalue");
 };
 factor: value {
     $$ = $1;
     AppendSeq($$, GenInstr(NULL, "addi", "$t2", "$t3", "0"));
+    
+    PostMessage(GetCurrentColumn(), "Singular factor");
 };
 factor: factor mul_op value {
     $$ = $1;
@@ -158,6 +227,8 @@ factor: factor mul_op value {
         AppendSeq($$, GenInstr(NULL, "mul", "$t2", "$t2", "$t3"));
     if($2 == DIV_TOK)
         AppendSeq($$, GenInstr(NULL, "div", "$t2", "$t2", "$t3"));
+        
+    PostMessage(GetCurrentColumn(), "Compound factor");
 };
 value: id {
     char *label = strdup("_");
@@ -179,18 +250,6 @@ value: GET_TOK LPAREN_TOK type RPAREN_TOK {
         AppendSeq($$, GenInstr(NULL, "addi", "$t3", "$v0", "0"));
     }
 }
-add_op: PLUS_TOK {
-    $$ = PLUS_TOK;
-};
-add_op: MINUS_TOK {
-    $$ = MINUS_TOK;
-};
-mul_op: TIMES_TOK {
-    $$ = TIMES_TOK;
-};
-mul_op: DIV_TOK {
-    $$ = DIV_TOK;
-};
 
 string: STR_LIT_TOK {
     StringLiteral(yytext);
@@ -199,74 +258,90 @@ string: STR_LIT_TOK {
     sprintf(label, "_STR_%d", StringNum);
     
     $$ = label;
+    
+    PostMessage(GetCurrentColumn()-strlen(yytext)+1, "StringLiteral");
+};
+
+add_op: PLUS_TOK {
+    $$ = PLUS_TOK;
+    PostMessage(GetCurrentColumn(), "Additive Operator");
+};
+add_op: MINUS_TOK {
+    $$ = MINUS_TOK;
+    
+    PostMessage(GetCurrentColumn(), "Additive Operator");
+};
+mul_op: TIMES_TOK {
+    $$ = TIMES_TOK;
+    
+    PostMessage(GetCurrentColumn()-1, "Multiplicitive Operator");
+};
+mul_op: DIV_TOK {
+    $$ = DIV_TOK;
+    
+    PostMessage(GetCurrentColumn()-1, "Multiplicitive Operator");
 };
 
 bool_op: GREATER_TOK {
     $$ = GREATER_TOK;
+    
+    PostMessage(GetCurrentColumn()-1, "Boolean Operator");
 }
 bool_op: GREATEREQ_TOK {
     $$ = GREATEREQ_TOK;
+    
+    PostMessage(GetCurrentColumn()-2, "Boolean Operator");
 }
 bool_op: LESS_TOK {
     $$ = LESS_TOK;
+    
+    PostMessage(GetCurrentColumn()-1, "Boolean Operator");
 }
 bool_op: LESSEQ_TOK {
     $$ = LESSEQ_TOK;
+    
+    PostMessage(GetCurrentColumn()-2, "Boolean Operator");
 }
 bool_op: EQUAL_TOK {
     $$ = EQUAL_TOK;
+    
+    PostMessage(GetCurrentColumn()-2, "Boolean Operator");
 }
 bool_op: NOTEQUAL_TOK {
     $$ = NOTEQUAL_TOK;
+    
+    PostMessage(GetCurrentColumn()-2, "Boolean Operator");
 }
 
-statement: WHILE_TOK LPAREN_TOK rvalue bool_op rvalue RPAREN_TOK block SEMI_TOK {
-    char *top = GenLabel();
-    char *bottom = GenLabel();
-    
-    // Top of loop
-    $$ = GenInstr(top, NULL, NULL, NULL, NULL);
-    
+
+
+bvalue: rvalue bool_op rvalue {
     // Evaluate Conditional
-    AppendSeq($$, $3);
+    $$ = $1;
     AppendSeq($$, GenInstr(NULL, "addi", "$t4", "$t1", "0"));
-    AppendSeq($$, $5);
-    AppendSeq($$, GenInstr(NULL, "sub", "$t4", "$t4", "$t1"));
+    AppendSeq($$, $3);
     
     // Branch condition  x - y is in $t4
-    switch($4) {
+    switch($2) {
         case GREATER_TOK:
-            AppendSeq($$, GenInstr(NULL, "blez", "$t4", bottom, NULL));
+            AppendSeq($$, GenInstr(NULL, "sgt", "$t4", "$t4", "$t1"));
             break;
         case GREATEREQ_TOK:
-            AppendSeq($$, GenInstr(NULL, "bltz", "$t4", bottom, NULL));
+            AppendSeq($$, GenInstr(NULL, "sge", "$t4", "$t4", "$t1"));
             break;
         case LESS_TOK:
-            AppendSeq($$, GenInstr(NULL, "bgez", "$t4", bottom, NULL));
+            AppendSeq($$, GenInstr(NULL, "slt", "$t4", "$t4", "$t1"));
             break;
         case LESSEQ_TOK:
-            AppendSeq($$, GenInstr(NULL, "bgtz", "$t4", bottom, NULL));
+            AppendSeq($$, GenInstr(NULL, "sle", "$t4", "$t4", "$t1"));
             break;
         case EQUAL_TOK:
-            AppendSeq($$, GenInstr(NULL, "beq", "$t4", "$zero", bottom));
+            AppendSeq($$, GenInstr(NULL, "seq", "$t4", "$t4", "$t1"));
             break;
         case NOTEQUAL_TOK:
-            AppendSeq($$, GenInstr(NULL, "bne", "$t4", "$zero", bottom));
+            AppendSeq($$, GenInstr(NULL, "sne", "$t4", "$t4", "$t1"));
             break;
     }
-    
-    
-    
-    // Perform Loop
-    AppendSeq($$, $7);
-    // Go back to top
-    AppendSeq($$, GenInstr(NULL, "b", top, NULL, NULL));
-    // End of loop
-    AppendSeq($$, GenInstr(bottom, NULL, NULL, NULL, NULL));
-}
-
-block: LBRACE_TOK stmtseq RBRACE_TOK {
-    $$ = $2;
 }
 
 %%

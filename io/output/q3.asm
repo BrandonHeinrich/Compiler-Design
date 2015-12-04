@@ -32,8 +32,8 @@ L1:
 	li		$t3, 0
 	addi		$t2, $t3, 0
 	addi		$t1, $t2, 0
-	sub		$t4, $t4, $t1
-	blez		$t4, L2
+	sgt		$t4, $t4, $t1
+	beq		$t4, $zero, L2
 	lw		$t3, _fac
 	addi		$t2, $t3, 0
 	lw		$t3, _x
