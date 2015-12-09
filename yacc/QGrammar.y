@@ -139,7 +139,7 @@ statement: PUT_TOK LPAREN_TOK string RPAREN_TOK SEMI_TOK {
 };
 statement: PUT_TOK LPAREN_TOK rvalue RPAREN_TOK SEMI_TOK {
     $$ = $3;
-    AppendSeq($$, GenInstr(NULL, "addi", "$a0", "$t1", "0"));
+    AppendSeq($$, GenInstr(NULL, "move", "$a0", "$t1", NULL));
     AppendSeq($$, GenInstr(NULL, "li", "$v0", "1", NULL));
     AppendSeq($$, GenInstr(NULL, "syscall", NULL, NULL, NULL));
     
@@ -200,7 +200,7 @@ block: LBRACE_TOK stmtseq RBRACE_TOK {
 
 rvalue: factor {
     $$ = $1;
-    AppendSeq($$, GenInstr(NULL, "addi", "$t1", "$t2", "0"));
+    AppendSeq($$, GenInstr(NULL, "move", "$t1", "$t2", NULL));
     
     //PostMessage(GetCurrentColumn(), "Singular rvalue");
 };
@@ -216,7 +216,7 @@ rvalue: rvalue add_op factor {
 };
 factor: value {
     $$ = $1;
-    AppendSeq($$, GenInstr(NULL, "addi", "$t2", "$t3", "0"));
+    AppendSeq($$, GenInstr(NULL, "move", "$t2", "$t3", NULL));
     
     PostMessage(GetCurrentColumn(), "Singular factor");
 };
@@ -242,14 +242,19 @@ value: GET_TOK LPAREN_TOK type RPAREN_TOK {
     if($3->BaseType == IntBaseType) {
         $$ = GenInstr(NULL, "li", "$v0", "5", NULL);
         AppendSeq($$, GenInstr(NULL, "syscall", NULL, NULL, NULL));
-        AppendSeq($$, GenInstr(NULL, "addi", "$t3", "$v0", "0"));
+        AppendSeq($$, GenInstr(NULL, "move", "$t3", "$v0", NULL));
     }
     if($3->BaseType == ChrBaseType) {
         $$ = GenInstr(NULL, "li", "$v0", "12", NULL);
         AppendSeq($$, GenInstr(NULL, "syscall", NULL, NULL, NULL));
-        AppendSeq($$, GenInstr(NULL, "addi", "$t3", "$v0", "0"));
+        AppendSeq($$, GenInstr(NULL, "move", "$t3", "$v0", NULL));
     }
 }
+value: LPAREN_TOK rvalue RPAREN_TOK {
+    $$ = $2;
+    AppendSeq($$, GenInstr(NULL, "move", "$t3", "$t1", NULL));
+    $$ = Preserve("$t1", Preserve("$t2", $$));
+};
 
 string: STR_LIT_TOK {
     StringLiteral(yytext);
@@ -313,12 +318,10 @@ bool_op: NOTEQUAL_TOK {
     PostMessage(GetCurrentColumn()-2, "Boolean Operator");
 }
 
-
-
 bvalue: rvalue bool_op rvalue {
     // Evaluate Conditional
     $$ = $1;
-    AppendSeq($$, GenInstr(NULL, "addi", "$t4", "$t1", "0"));
+    AppendSeq($$, GenInstr(NULL, "move", "$t4", "$t1", NULL));
     AppendSeq($$, $3);
     
     // Branch condition  x - y is in $t4

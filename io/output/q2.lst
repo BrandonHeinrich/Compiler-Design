@@ -1,14 +1,21 @@
     1: int x, y, z;
     2: main
     3: {
-    4:   x = 5 + 2 / 3;
-              AB  CD  E
+    4:   x = 5 + 5 + 6 * (10 + 2);
+              AB  CD  EF    GH  IJ
     -A Singular factor
     -B Additive Operator
     -C Singular factor
-    -D Multiplicitive Operator
-    -E Compound factor
+    -D Compound rvalue
+     | Additive Operator
+    -E Singular factor
+    -F Multiplicitive Operator
+    -G Singular factor
+    -H Additive Operator
+    -I Singular factor
      | Compound rvalue
+     | Compound factor
+    -J Compound rvalue
      | End of Statement
 
     5:   y = x * x - 4;

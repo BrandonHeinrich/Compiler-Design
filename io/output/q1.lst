@@ -2,7 +2,25 @@
     2: int x, y;
     3: main 
     4: {
-    5: }
+    5:     x = 5 + 6*3 - 17 + 23/5;
+                AB  C DE   FG   H I
+    -A Singular factor
+    -B Additive Operator
+    -C Singular factor
+     | Multiplicitive Operator
+    -D Compound factor
+    -E Compound rvalue
+     | Additive Operator
+    -F Singular factor
+    -G Compound rvalue
+     | Additive Operator
+    -H Singular factor
+     | Multiplicitive Operator
+    -I Compound factor
+     | Compound rvalue
+     | End of Statement
+
+    6: }
        AB
     -A End of Block
     -B COMPILATION SUCSESSFUL

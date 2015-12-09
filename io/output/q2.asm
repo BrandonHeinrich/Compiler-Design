@@ -1,20 +1,37 @@
 	.text	
 	li		$t3, 5
-	addi		$t2, $t3, 0
-	addi		$t1, $t2, 0
+	move		$t2, $t3
+	move		$t1, $t2
+	li		$t3, 5
+	move		$t2, $t3
+	add		$t1, $t1, $t2
+	li		$t3, 6
+	move		$t2, $t3
+	addiu		$sp, $sp, -4
+	sw		$t1, 0($sp)
+	addiu		$sp, $sp, -4
+	sw		$t2, 0($sp)
+	li		$t3, 10
+	move		$t2, $t3
+	move		$t1, $t2
 	li		$t3, 2
-	addi		$t2, $t3, 0
-	li		$t3, 3
-	div		$t2, $t2, $t3
+	move		$t2, $t3
+	add		$t1, $t1, $t2
+	move		$t3, $t1
+	lw		$t2, 0($sp)
+	addiu		$sp, $sp, 4
+	lw		$t1, 0($sp)
+	addiu		$sp, $sp, 4
+	mul		$t2, $t2, $t3
 	add		$t1, $t1, $t2
 	sw		$t1, _x
 	lw		$t3, _x
-	addi		$t2, $t3, 0
+	move		$t2, $t3
 	lw		$t3, _x
 	mul		$t2, $t2, $t3
-	addi		$t1, $t2, 0
+	move		$t1, $t2
 	li		$t3, 4
-	addi		$t2, $t3, 0
+	move		$t2, $t3
 	sub		$t1, $t1, $t2
 	sw		$t1, _y
 	li		$v0, 4
@@ -22,17 +39,17 @@
 	syscall	
 	li		$v0, 5
 	syscall	
-	addi		$t3, $v0, 0
-	addi		$t2, $t3, 0
-	addi		$t1, $t2, 0
+	move		$t3, $v0
+	move		$t2, $t3
+	move		$t1, $t2
 	sw		$t1, _z
 	li		$v0, 4
 	la		$a0, _STR_2
 	syscall	
 	lw		$t3, _x
-	addi		$t2, $t3, 0
-	addi		$t1, $t2, 0
-	addi		$a0, $t1, 0
+	move		$t2, $t3
+	move		$t1, $t2
+	move		$a0, $t1
 	li		$v0, 1
 	syscall	
 	li		$v0, 4
@@ -42,11 +59,11 @@
 	la		$a0, _STR_4
 	syscall	
 	lw		$t3, _y
-	addi		$t2, $t3, 0
+	move		$t2, $t3
 	lw		$t3, _z
 	mul		$t2, $t2, $t3
-	addi		$t1, $t2, 0
-	addi		$a0, $t1, 0
+	move		$t1, $t2
+	move		$a0, $t1
 	li		$v0, 1
 	syscall	
 	li		$v0, 4

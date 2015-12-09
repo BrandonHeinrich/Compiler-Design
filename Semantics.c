@@ -158,3 +158,14 @@ void StringLiteral(char *String) {
     temp->Next = Literals;
     Literals = temp;
 }
+
+
+struct InstrSeq *Preserve(char* reg, struct InstrSeq *body){
+    struct InstrSeq *result = GenInstr(NULL, "addiu", "$sp", "$sp", "-4");
+    AppendSeq(result, GenInstr(NULL, "sw", reg, "0($sp)", NULL));
+    AppendSeq(result, body);
+    AppendSeq(result, GenInstr(NULL, "lw", reg, "0($sp)", NULL));
+    AppendSeq(result, GenInstr(NULL, "addiu", "$sp", "$sp", "4"));
+    
+    return result;
+}
