@@ -47,4 +47,6 @@ void Finish(struct InstrSeq *DeclsCode, struct InstrSeq *BodyCode);
 void StringLiteral(char *String);
 
 struct InstrSeq *Preserve(char* reg, struct InstrSeq *body);
+
+struct InstrSeq *WhileLoop(struct InstrSeq *condition, struct InstrSeq *body);
 #endif

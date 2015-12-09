@@ -4,6 +4,11 @@
 int x, fac;
 
 main {
+for(x = 0; x = x + 1; x < 10) {
+        put("x =");
+        put(x);
+        put("\n");
+    };
     put("> ");
     x = get(int);
     put("x = ");
@@ -17,4 +22,5 @@ main {
     put("factorial = ");
     put(fac);
     put("\n");
+    
 }

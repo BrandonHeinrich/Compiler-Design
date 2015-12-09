@@ -45,6 +45,7 @@ bool inComment = false;
 
 "main"              {RETURN MAIN_TOK;}
 "while"             {RETURN WHILE_TOK;}
+"for"               {RETURN FOR_TOK;}
 "get"               {RETURN GET_TOK;}
 "put"               {RETURN PUT_TOK;}
 "if"                {RETURN IF_TOK;}

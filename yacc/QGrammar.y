@@ -64,6 +64,7 @@ void yyerror(char *s);
 %token STR_LIT_TOK
 
 %token WHILE_TOK
+%token FOR_TOK
 %token GREATER_TOK
 %token LESS_TOK
 %token GREATEREQ_TOK
@@ -146,25 +147,7 @@ statement: PUT_TOK LPAREN_TOK rvalue RPAREN_TOK SEMI_TOK {
     PostMessage(GetCurrentColumn(), "End of Statement");
 };
 statement: WHILE_TOK LPAREN_TOK bvalue RPAREN_TOK block SEMI_TOK {
-    char *top = GenLabel();
-    char *bottom = GenLabel();
-    
-    // Top of loop
-    $$ = GenInstr(top, NULL, NULL, NULL, NULL);
-    
-    AppendSeq($$, $3);
-    AppendSeq($$, GenInstr(NULL, "beq", "$t4", "$zero", bottom));
-    
-    
-    
-    
-    
-    // Perform Loop
-    AppendSeq($$, $5);
-    // Go back to top
-    AppendSeq($$, GenInstr(NULL, "b", top, NULL, NULL));
-    // End of loop
-    AppendSeq($$, GenInstr(bottom, NULL, NULL, NULL, NULL));
+    $$ = WhileLoop($3,$5);
     
     PostMessage(GetCurrentColumn(), "End of Statement");
 }
@@ -192,6 +175,11 @@ statement: IF_TOK LPAREN_TOK bvalue RPAREN_TOK block ELSE_TOK block SEMI_TOK {
     
     PostMessage(GetCurrentColumn(), "End of Statement");
 }
+statement: FOR_TOK LPAREN_TOK statement statement bvalue RPAREN_TOK block SEMI_TOK {
+    $$ = $3;
+    AppendSeq($7, $4);
+    AppendSeq($$, WhileLoop($5, $7));
+};
 
 block: LBRACE_TOK stmtseq RBRACE_TOK {
     $$ = $2;

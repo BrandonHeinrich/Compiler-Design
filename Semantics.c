@@ -169,3 +169,24 @@ struct InstrSeq *Preserve(char* reg, struct InstrSeq *body){
     
     return result;
 }
+
+struct InstrSeq *WhileLoop(struct InstrSeq *condition, struct InstrSeq *body) {
+    char *top = GenLabel();
+    char *bottom = GenLabel();
+    
+    // Top of loop
+    struct InstrSeq *result = GenInstr(top, NULL, NULL, NULL, NULL);
+    
+    AppendSeq(result, condition);
+    AppendSeq(result, GenInstr(NULL, "beq", "$t4", "$zero", bottom));
+    
+    
+    // Perform Loop
+    AppendSeq(result, body);
+    // Go back to top
+    AppendSeq(result, GenInstr(NULL, "b", top, NULL, NULL));
+    // End of loop
+    AppendSeq(result, GenInstr(bottom, NULL, NULL, NULL, NULL));
+    
+    return result;
+}
