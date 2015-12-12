@@ -41,6 +41,10 @@ void yyerror(char *s);
 %type <Operation> mul_op
 %type <Operation> bool_op
 
+%type <InstrSeq> case
+%type <InstrSeq> caselist
+%type <InstrSeq> extracase
+
 
 /* List of tokens*/
 %token IDENT_TOK
@@ -73,6 +77,12 @@ void yyerror(char *s);
 %token NOTEQUAL_TOK
 %token IF_TOK
 %token ELSE_TOK
+%token BREAK_TOK
+
+%token SWITCH_TOK
+%token COLON_TOK
+%token CASE_TOK
+%token DEFAULT_TOK
 
 %%
 
@@ -180,6 +190,10 @@ statement: FOR_TOK LPAREN_TOK statement statement bvalue RPAREN_TOK block SEMI_T
     AppendSeq($7, $4);
     AppendSeq($$, WhileLoop($5, $7));
 };
+
+statement: BREAK_TOK SEMI_TOK {
+    
+}
 
 block: LBRACE_TOK stmtseq RBRACE_TOK {
     $$ = $2;
@@ -334,6 +348,52 @@ bvalue: rvalue bool_op rvalue {
             break;
     }
 }
+
+
+statement: SWITCH_TOK LPAREN_TOK rvalue RPAREN_TOK COLON_TOK caselist SEMI_TOK {
+    // Store the value of the switch constant in register $t5
+    $$ = $3;
+    AppendSeq($$, GenInstr(NULL, "move", "$t5", "$t1", NULL));
+    
+    // Append the cases
+    AppendSeq($$, $6);
+    
+    $$ = Preserve("$t5", $$);
+}
+caselist: case extracase {
+    $$ = $1;
+    AppendSeq($$, $2);
+}
+extracase: case extracase {
+    $$ = $1;
+    AppendSeq($$, $2);
+}
+extracase: {
+    $$ = NULL;
+}
+case: CASE_TOK LPAREN_TOK rvalue RPAREN_TOK block {
+    char *end_label = GenLabel();
+    
+    // Calculate the rvalue
+    $$ = $3;
+    
+    // Skip to next case if $t1 and $t5 are not equal
+    AppendSeq($$, GenInstr(NULL, "bne", "$t1", "$t5", end_label));
+    
+    // If theyre equal, execute the body
+    AppendSeq($$, $5);
+    
+    // Label for the start of the next case
+    AppendSeq($$, GenInstr(end_label, NULL, NULL, NULL, NULL));
+}
+case: DEFAULT_TOK block {
+    // Just Run the block
+    $$ = $2;
+}
+
+
+
+
 
 %%
 

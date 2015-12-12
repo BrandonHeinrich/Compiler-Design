@@ -1,0 +1,74 @@
+    1: int target;
+    2: main {
+    3:     target = 12;
+                      A
+    -A Singular factor
+     | End of Statement
+
+    4:     put("Guess a number between 1 and 10\n");
+               A                                   B
+    -A StringLiteral
+    -B End of Statement
+
+    5:     switch(target):
+                        A
+    -A Singular factor
+
+    6:         case(get(int)) {
+                           A
+    -A Singular factor
+
+    7:             put("You got it on your first try!");
+                       A                               B
+    -A StringLiteral
+    -B End of Statement
+
+    8:         }
+               A
+    -A End of Block
+
+    9:         case(get(int)) {
+                           A
+    -A Singular factor
+
+   10:             put("You got it on your second try!");
+                       A                                B
+    -A StringLiteral
+    -B End of Statement
+
+   11:         }
+               A
+    -A End of Block
+
+   12:         case(12) {
+                      A
+    -A Singular factor
+
+   13:             put("Sorry, I cheated");
+                       A                  B
+    -A StringLiteral
+    -B End of Statement
+
+   14:         }
+               A
+    -A End of Block
+
+   15:         default {
+   16:             put("The number was: ");
+                       A                  B
+    -A StringLiteral
+    -B End of Statement
+
+   17:             put(target);
+                             AB
+    -A Singular factor
+    -B End of Statement
+
+   18:         };
+               A
+    -A End of Block
+
+   19: }       A
+    -A End of Block
+     | COMPILATION SUCSESSFUL
+

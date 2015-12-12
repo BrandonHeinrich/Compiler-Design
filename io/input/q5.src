@@ -1,0 +1,20 @@
+int target;
+
+main {
+    target = 12;
+    put("Guess a number between 1 and 10\n");
+    switch(target):
+        case(get(int)) {
+            put("You got it on your first try!\n");
+        }
+        case(get(int)) {
+            put("You got it on your second try!\n");
+        }
+        case(12) {
+            put("Sorry, I cheated, ");
+        }
+        default {
+            put("The number was: ");
+            put(target);
+        };
+}

@@ -1,13 +1,17 @@
 	.text	
-	li		$t1, 5
-	li		$t2, 6
+	li		$t3, 5
+	move		$t2, $t3
+	move		$t1, $t2
+	li		$t3, 6
+	move		$t2, $t3
 	li		$t3, 3
 	mul		$t2, $t2, $t3
 	add		$t1, $t1, $t2
-	li		$t2, 17
+	li		$t3, 17
+	move		$t2, $t3
 	sub		$t1, $t1, $t2
 	li		$t3, 23
-	addi		$t2, $t3, 0
+	move		$t2, $t3
 	li		$t3, 5
 	div		$t2, $t2, $t3
 	add		$t1, $t1, $t2

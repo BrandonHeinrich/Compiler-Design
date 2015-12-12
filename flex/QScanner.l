@@ -30,6 +30,7 @@ bool inComment = false;
 "\n"    {if(lineComment){lineComment=false; inComment=false;}}
 
 ";"                 {RETURN SEMI_TOK;}
+":"                 {RETURN COLON_TOK;}
 "="                 {RETURN ASSIGN_TOK;}
 "+"                 {RETURN PLUS_TOK;}
 "-"                 {RETURN MINUS_TOK;}
@@ -50,6 +51,9 @@ bool inComment = false;
 "put"               {RETURN PUT_TOK;}
 "if"                {RETURN IF_TOK;}
 "else"              {RETURN ELSE_TOK;}
+"switch"            {RETURN SWITCH_TOK;}
+"case"              {RETURN CASE_TOK;}
+"default"           {RETURN DEFAULT_TOK;}
 
 "{"                 {RETURN LBRACE_TOK;}
 "}"                 {RETURN RBRACE_TOK;}
