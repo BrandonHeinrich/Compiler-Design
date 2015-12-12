@@ -190,3 +190,35 @@ struct InstrSeq *WhileLoop(struct InstrSeq *condition, struct InstrSeq *body) {
     
     return result;
 }
+
+struct InstrSeq *blockStack = NULL;
+
+
+void EnterBlock() {
+    printf("EnterBlock\n");
+    struct InstrSeq *temp = blockStack;
+    blockStack = GenInstr(GenLabel(), NULL, NULL, NULL, NULL);
+    
+    AppendSeq(blockStack, temp);
+}
+struct InstrSeq *ExitBlock() {
+    printf("ExitBlock\n");
+    fflush(stdout);
+    
+    struct InstrSeq *result = blockStack;
+    blockStack = blockStack->Next;
+    result->Next = NULL;
+    
+    return result;
+}
+struct InstrSeq *GetBreakTarget() {
+    printf("GetBreakTarget\n");
+    fflush(stdout);
+    
+    if(blockStack == NULL) {
+        printf("WTFFFF!");
+        fflush(stdout);
+    }
+    
+    return GenInstr(NULL, "j", blockStack->Next->Label, NULL, NULL);
+}

@@ -99,3 +99,9 @@ q5: QCompile.c flex/QScanner.l yacc/QGrammar.y IOMngr.o SymTab.o CodeGen.o Seman
 	./a.out q5
 	java -jar mars.jar nc io/output/q5.asm
 	
+q6: QCompile.c flex/QScanner.l yacc/QGrammar.y IOMngr.o SymTab.o CodeGen.o Semantics.o
+	make MyQCompiler
+	./a.out q6
+	java -jar mars.jar nc io/output/q6.asm
+	
+	

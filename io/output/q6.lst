@@ -1,0 +1,51 @@
+    1: int x;
+    2: main {
+    3:     x = 10;
+                 A
+    -A Singular factor
+     | End of Statement
+
+    4:     loop {
+    5:         put(x);
+                    AB
+    -A Singular factor
+    -B End of Statement
+
+    6:         put(", ");
+                   A    B
+    -A StringLiteral
+    -B End of Statement
+
+    7:         x = x - 1;
+                    AB  C
+    -A Singular factor
+    -B Additive Operator
+    -C Singular factor
+     | Compound rvalue
+     | End of Statement
+
+    8:         if(x == 0) {
+                   A    B
+    -A Singular factor
+     | Boolean Operator
+    -B Singular factor
+
+    9:             break;
+   10:         };
+               AB
+    -A End of Block
+    -B End of Statement
+
+   11:     };
+           A
+    -A End of Block
+
+   12:     put("BLASTOFF!!!");
+               A             B
+    -A StringLiteral
+    -B End of Statement
+
+   13: }       A
+    -A End of Block
+     | COMPILATION SUCSESSFUL
+

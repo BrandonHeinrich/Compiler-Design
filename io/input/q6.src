@@ -1,0 +1,14 @@
+int x;
+
+main {
+    x = 10;
+    loop {
+        put(x);
+        put(", ");
+        x = x - 1;
+        if(x == 0) {
+            break;
+        };
+    };
+    put("BLASTOFF!!!");
+}

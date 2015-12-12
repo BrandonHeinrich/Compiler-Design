@@ -77,15 +77,16 @@ void yyerror(char *s);
 %token NOTEQUAL_TOK
 %token IF_TOK
 %token ELSE_TOK
-%token BREAK_TOK
 
 %token SWITCH_TOK
 %token COLON_TOK
 %token CASE_TOK
 %token DEFAULT_TOK
 
-%%
+%token LOOP_TOK
+%token BREAK_TOK
 
+%%
 prog : decls body {
     Finish($1, $2);
 };
@@ -190,14 +191,34 @@ statement: FOR_TOK LPAREN_TOK statement statement bvalue RPAREN_TOK block SEMI_T
     AppendSeq($7, $4);
     AppendSeq($$, WhileLoop($5, $7));
 };
-
-statement: BREAK_TOK SEMI_TOK {
+statement: LOOP_TOK block SEMI_TOK {
+    char *top_label = GenLabel();
     
+    $$ = GenInstr(top_label, NULL, NULL, NULL, NULL);
+    AppendSeq($$, $2);
+    
+    // Need to put loop instruction before last instruction of block.
+    struct InstrSeq *head = $$;
+    while (head->Next->Next != NULL){
+        head = head->Next;
+    }
+    
+    // Label at the end of the loop
+    struct InstrSeq *Tail = head->Next;
+    // Put in jump to top
+    head->Next = GenInstr(NULL, "j", top_label, NULL, NULL);
+    //reattach label
+    head->Next->Next = Tail;
+}
+statement: BREAK_TOK SEMI_TOK {
+    // Jump to end of containing block two levels up.
+    $$ = GetBreakTarget();
 }
 
 block: LBRACE_TOK stmtseq RBRACE_TOK {
     $$ = $2;
     PostMessage(GetCurrentColumn(), "End of Block");
+    AppendSeq($$, ExitBlock());
 }
 
 rvalue: factor {
@@ -349,7 +370,6 @@ bvalue: rvalue bool_op rvalue {
     }
 }
 
-
 statement: SWITCH_TOK LPAREN_TOK rvalue RPAREN_TOK COLON_TOK caselist SEMI_TOK {
     // Store the value of the switch constant in register $t5
     $$ = $3;
@@ -390,6 +410,9 @@ case: DEFAULT_TOK block {
     // Just Run the block
     $$ = $2;
 }
+
+
+
 
 
 

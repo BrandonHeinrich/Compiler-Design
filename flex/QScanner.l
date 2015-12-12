@@ -54,8 +54,10 @@ bool inComment = false;
 "switch"            {RETURN SWITCH_TOK;}
 "case"              {RETURN CASE_TOK;}
 "default"           {RETURN DEFAULT_TOK;}
+"loop"              {RETURN LOOP_TOK;}
+"break"             {RETURN BREAK_TOK;}
 
-"{"                 {RETURN LBRACE_TOK;}
+"{"                 {EnterBlock(); RETURN LBRACE_TOK;}
 "}"                 {RETURN RBRACE_TOK;}
 "("                 {RETURN LPAREN_TOK;}
 ")"                 {RETURN RPAREN_TOK;}

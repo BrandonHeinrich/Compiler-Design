@@ -49,4 +49,11 @@ void StringLiteral(char *String);
 struct InstrSeq *Preserve(char* reg, struct InstrSeq *body);
 
 struct InstrSeq *WhileLoop(struct InstrSeq *condition, struct InstrSeq *body);
+
+void EnterBlock();
+struct InstrSeq *ExitBlock();
+struct InstrSeq *GetBreakTarget();
+
+
+
 #endif
