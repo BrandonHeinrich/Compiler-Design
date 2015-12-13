@@ -6,6 +6,7 @@
 #include <string.h>
 
 #include "Semantics.h"
+#include "Optimize.h"
 
 /* The main identifier symbol table */
 struct SymTab *IdentSymTab;
@@ -122,6 +123,13 @@ void Finish(struct InstrSeq *DeclsCode, struct InstrSeq *BodyCode) {
     AppendSeq(finalCode, DeclsCode);
     AppendSeq(finalCode, Literals);
     
+    WriteSeq(finalCode);
+    
+    
+    
+    
+    InitCodeGen("io/output/optimized.asm");
+    Optimize(finalCode);
     WriteSeq(finalCode);
     
     // write code sequences out to the assembly file

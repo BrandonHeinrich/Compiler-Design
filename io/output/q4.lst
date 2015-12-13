@@ -94,23 +94,7 @@
     -E StringLiteral
     -F End of Statement
 
-   22:   if(x == 5) {
-             A    B
-    -A Singular factor
-     | Boolean Operator
-    -B Singular factor
-
-   23:     put("x = 5");
-               A       B
-    -A StringLiteral
-    -B End of Statement
-
-   24:   };
-         AB
-    -A End of Block
-    -B End of Statement
-
-   25: }
+   22: }
        AB
     -A End of Block
     -B COMPILATION SUCSESSFUL

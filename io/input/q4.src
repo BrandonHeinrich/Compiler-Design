@@ -22,7 +22,4 @@ main
   };
 
   put("gcd = "); put(x); put("\n");
-  if(x == 5) {
-    put("x = 5");
-  };
 }

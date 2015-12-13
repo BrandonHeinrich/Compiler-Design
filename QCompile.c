@@ -4,6 +4,7 @@
 
 #include "CodeGen.h"
 #include "IOMngr.h"
+#include "Optimize.h"
 
 extern int yyparse();
 

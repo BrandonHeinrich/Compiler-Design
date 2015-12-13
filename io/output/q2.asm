@@ -69,6 +69,7 @@
 	li		$v0, 4
 	la		$a0, _STR_5
 	syscall	
+L1:
 	.data	
 _x:	.word		0
 _y:	.word		0

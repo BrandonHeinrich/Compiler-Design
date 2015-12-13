@@ -58,15 +58,18 @@ Q:	Q.o SymTab.o IOMngr.o QScanner.o QGrammar.o Semantics.o CodeGen.o
 
 CodeGen.o: CodeGen.c CodeGen.h
 
-Semantics.o: Semantics.h Semantics.h
+Semantics.o: Semantics.c Semantics.h
+
+Optimize.o: Optimize.c Optimize.h
 
 
-MyQCompiler: QCompile.c flex/QScanner.l yacc/QGrammar.y IOMngr.o SymTab.o CodeGen.o Semantics.o
+MyQCompiler: QCompile.c flex/QScanner.l yacc/QGrammar.y IOMngr.o SymTab.o CodeGen.o Semantics.o Optimize.o
 	bison yacc/QGrammar.y
 	lex flex/QScanner.l
 	mv lex.yy.c QScanner.c
 	mv QGrammar.tab.c QGrammar.h
-	gcc QCompile.c QScanner.c IOMngr.o SymTab.o CodeGen.o Semantics.o -ll -ly
+	gcc QCompile.c QScanner.c IOMngr.o SymTab.o CodeGen.o Semantics.o Optimize.o -ll -ly
+	mv a.out QCompile
 
 # Other
 clean:
@@ -76,32 +79,32 @@ clean:
 	
 q1: QCompile.c flex/QScanner.l yacc/QGrammar.y IOMngr.o SymTab.o CodeGen.o Semantics.o
 	make MyQCompiler
-	./a.out q1
+	./QCompile q1
 	java -jar mars.jar nc io/output/q1.asm
 	
 q2: QCompile.c flex/QScanner.l yacc/QGrammar.y IOMngr.o SymTab.o CodeGen.o Semantics.o
 	make MyQCompiler
-	./a.out q2
+	./QCompile q2
 	java -jar mars.jar nc io/output/q2.asm
 
 q3: QCompile.c flex/QScanner.l yacc/QGrammar.y IOMngr.o SymTab.o CodeGen.o Semantics.o
 	make MyQCompiler
-	./a.out q3
+	./QCompile q3
 	java -jar mars.jar nc io/output/q3.asm
 	
 q4: QCompile.c flex/QScanner.l yacc/QGrammar.y IOMngr.o SymTab.o CodeGen.o Semantics.o
 	make MyQCompiler
-	./a.out q4
+	./QCompile q4
 	java -jar mars.jar nc io/output/q4.asm
 	
 q5: QCompile.c flex/QScanner.l yacc/QGrammar.y IOMngr.o SymTab.o CodeGen.o Semantics.o
 	make MyQCompiler
-	./a.out q5
+	./QCompile q5
 	java -jar mars.jar nc io/output/q5.asm
 	
 q6: QCompile.c flex/QScanner.l yacc/QGrammar.y IOMngr.o SymTab.o CodeGen.o Semantics.o
 	make MyQCompiler
-	./a.out q6
+	./QCompile q6
 	java -jar mars.jar nc io/output/q6.asm
 	
 	
